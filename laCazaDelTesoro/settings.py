@@ -10,7 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+# https://devcenter.heroku.com/articles/django-app-configuration
 import os
+from decouple import config
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,10 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'n8r51wl$#xxyxfnr+tjhn8p=fw!uuc59o5x-n-93j!@&67#puz'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -73,14 +76,19 @@ WSGI_APPLICATION = 'laCazaDelTesoro.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
+# MONGO CONFIGURATION
+# https://stackoverflow.com/questions/51355570/how-to-connect-django-rest-api-with-mongodb#51399673
+# https://devcenter.heroku.com/articles/mongolab
+# https://github.com/nesdis/djongo/issues/171
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': 'treasureDB',
-        # 'HOST': 'host-name or ip address',
-        # 'PORT': port_number,
-        # 'USER': 'db-username',
-        # 'PASSWORD': 'password',
+        'NAME': config('MONGO_DB_NAME'),
+        'AUTH_SOURCE': config('MONGO_DB_NAME'), # https://stackoverflow.com/questions/55520287/pymongo-errors-operationfailure-authentication-failed
+        'HOST': config('MONGO_HOST', default='localhost'),
+        'PORT': config('MONGO_PORT', default=27017, cast=int),
+        'USER': config('MONGO_USER'),
+        'PASSWORD': config('MONGO_PASSWORD') # https://stackoverflow.com/questions/38757351/best-practice-for-config-variables-in-python https://stackoverflow.com/a/28103917/6093436
     }
 }
 
@@ -122,3 +130,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())

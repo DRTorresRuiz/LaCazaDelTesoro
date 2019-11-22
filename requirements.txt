@@ -1,0 +1,5 @@
+django
+gunicorn
+psycopg2==2.7.5 # https://stackoverflow.com/questions/57283470/django-pip-install-django-herokupsycopg2-error-is-blocking-deployment-to-her
+django-heroku
+python-decouple # https://stackoverflow.com/questions/38757351/best-practice-for-config-variables-in-python

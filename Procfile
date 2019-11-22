@@ -1,0 +1,1 @@
+web: gunicorn caza-del-tesoro.wsgi

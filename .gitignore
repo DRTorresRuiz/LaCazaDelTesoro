@@ -280,4 +280,7 @@ $RECYCLE.BIN/
 # Visual Studio Code 
 .vscode/
 
+# Config files
+*.env
+
 # End of https://www.gitignore.io/api/linux,macos,django,pycharm,windows
