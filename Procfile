@@ -1,1 +1,1 @@
-web: gunicorn laCazaDelTesoro.laCazaDelTesoro.wsgi
+web: gunicorn laCazaDelTesoro.wsgi
