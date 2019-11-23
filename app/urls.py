@@ -18,9 +18,9 @@ from django.urls import path
 
 admin.autodiscover()
 
-import web.views
+import laCazaDelTesoro.views as ctViews
 
 urlpatterns = [
-    path('', web.views.index, name="index"),
+    path('', ctViews.index, name="index"),
     path('admin/', admin.site.urls),
 ]

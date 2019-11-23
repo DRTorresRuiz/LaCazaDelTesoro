@@ -13,11 +13,10 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 # https://devcenter.heroku.com/articles/django-app-configuration
 import os
 from decouple import config
-import django_heroku
+# import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
@@ -30,9 +29,7 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -40,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'laCazaDelTesoro',
 ]
 
 MIDDLEWARE = [ 
@@ -52,14 +50,14 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     # Simplified static file serving.
     # https://warehouse.python.org/project/whitenoise/
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-ROOT_URLCONF = 'laCazaDelTesoro.urls'
+ROOT_URLCONF = 'app.urls'
 
 TEMPLATES = [
     {
@@ -77,8 +75,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'laCazaDelTesoro.wsgi.application'
-
+WSGI_APPLICATION = 'app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -90,19 +87,19 @@ WSGI_APPLICATION = 'laCazaDelTesoro.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        'NAME': config('MONGO_DB_NAME'),
-        'AUTH_SOURCE': config('MONGO_DB_NAME'), # https://stackoverflow.com/questions/55520287/pymongo-errors-operationfailure-authentication-failed
+        # 'ENFORCE_SCHEMA': True,
+        # 'NAME': config('MONGO_DB_NAME'),
+        # 'AUTH_SOURCE': config('MONGO_DB_NAME'), # https://stackoverflow.com/questions/55520287/pymongo-errors-operationfailure-authentication-failed
+        'AUTH_MECHANISM': 'SCRAM-SHA-1',
         'HOST': config('MONGO_HOST', default='localhost'),
         'PORT': config('MONGO_PORT', default=27017, cast=int),
-        'USER': config('MONGO_USER'),
-        'PASSWORD': config('MONGO_PASSWORD') # https://stackoverflow.com/questions/38757351/best-practice-for-config-variables-in-python https://stackoverflow.com/a/28103917/6093436
+        # 'USER': config('MONGO_USER'),
+        # 'PASSWORD': config('MONGO_PASSWORD'), # https://stackoverflow.com/questions/38757351/best-practice-for-config-variables-in-python https://stackoverflow.com/a/28103917/6093436
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -118,18 +115,12 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -145,4 +136,4 @@ STATICFILES_DIRS = (
 )
 
 # Activate Django-Heroku.
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
