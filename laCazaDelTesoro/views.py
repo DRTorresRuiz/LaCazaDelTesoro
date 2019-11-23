@@ -9,6 +9,6 @@ def index(request):
     # user = User.objects.createUser("JOSE")
     # name = User.objects.values_list("name", flat=True)
     # name = User.objects.filter(name__startswith='J').values("name").first()
-    # name = User.objects.filter(name__startswith='J').values("name")[0]["name"]
+    # name = User.objects.filter(name__startswith='J').values("name")[0]["name"] # https://stackoverflow.com/questions/32240718/dict-object-has-no-attribute-id
     name = User.objects.filter(name__startswith='J').values("name").first()["name"]
     return render(request, "index.html", {"greetings": name})
