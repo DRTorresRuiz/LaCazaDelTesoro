@@ -10,10 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
-# https://devcenter.heroku.com/articles/django-app-configuration
 import os
 from decouple import config
-# import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +25,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = [ ".herokuapp.com" ]
+ALLOWED_HOSTS = [ ".herokuapp.com", "localhost", "127.0.0.1"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -77,24 +75,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'app.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-# MONGO CONFIGURATION
-# https://stackoverflow.com/questions/51355570/how-to-connect-django-rest-api-with-mongodb#51399673
-# https://devcenter.heroku.com/articles/mongolab
-# https://github.com/nesdis/djongo/issues/171
+# MongoDB Configuration
 DATABASES = {
     'default': {
         'ENGINE': 'djongo',
-        # 'ENFORCE_SCHEMA': True,
-        # 'NAME': config('MONGO_DB_NAME'),
-        # 'AUTH_SOURCE': config('MONGO_DB_NAME'), # https://stackoverflow.com/questions/55520287/pymongo-errors-operationfailure-authentication-failed
         'AUTH_MECHANISM': 'SCRAM-SHA-1',
-        'HOST': config('MONGO_HOST', default='localhost'),
-        'PORT': config('MONGO_PORT', default=27017, cast=int),
-        # 'USER': config('MONGO_USER'),
-        # 'PASSWORD': config('MONGO_PASSWORD'), # https://stackoverflow.com/questions/38757351/best-practice-for-config-variables-in-python https://stackoverflow.com/a/28103917/6093436
+        'HOST': config('MONGO_URI', default='localhost')
     }
 }
 
@@ -134,6 +120,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
-# Activate Django-Heroku.
-# django_heroku.settings(locals())

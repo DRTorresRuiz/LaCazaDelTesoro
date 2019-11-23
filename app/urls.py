@@ -18,8 +18,10 @@ from django.urls import path
 
 admin.autodiscover()
 
+# Import your views
 import laCazaDelTesoro.views as ctViews
 
+# Add patterns to access to your views
 urlpatterns = [
     path('', ctViews.index, name="index"),
     path('admin/', admin.site.urls),
