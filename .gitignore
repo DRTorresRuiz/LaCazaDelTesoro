@@ -82,6 +82,7 @@ target/
 
 # pyenv
 .python-version
+env/
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
@@ -275,5 +276,11 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Visual Studio Code 
+.vscode/
+
+# Config files
+*.env
 
 # End of https://www.gitignore.io/api/linux,macos,django,pycharm,windows
