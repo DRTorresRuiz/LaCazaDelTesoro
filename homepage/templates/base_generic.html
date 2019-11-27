@@ -8,6 +8,16 @@
   <!-- Add additional CSS in static file -->
   {% load static %}
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <style>
+	table, th, td {
+	  border: 1px solid black;
+	  border-collapse: collapse;
+	}
+	th, td {
+	  padding: 5px;
+	  text-align: left;
+	}
+  </style>
 </head>
 <body>
   <div class="container-fluid">
@@ -16,8 +26,11 @@
       {% block sidebar %}
         <ul class="sidebar-nav">
           <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="">All books</a></li>
-          <li><a href="">All authors</a></li>
+		  <li><a href="">Login</a></li>
+		  <!--           
+		  
+          <li><a href="">All players</a></li> 
+		  -->
         </ul>
      {% endblock %}
       </div>

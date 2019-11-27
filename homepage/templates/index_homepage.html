@@ -2,14 +2,46 @@
 
 {% block content %}
   <h1>Home Page</h1>
-  <p>Welcome to Hello world from Malaga University Cloud Development subject.
- by <em>Grupo K</em>!</p>
-  <h2>Dynamic content</h2>
-  <p>The library has the following record counts:</p>
+  <p>Welcome to home page of the Malaga University Cloud Development Project by <em>Grupo K</em>!</p>
+  <h2>Dynamic content of Games</h2>
+  <p>The Game has the following record counts:</p>
   <ul>
-    <li><strong>Books:</strong> {{ num_books }}</li>
-    <li><strong>Copies:</strong> {{ num_instances }}</li>
-    <li><strong>Copies available:</strong> {{ num_instances_available }}</li>
-    <li><strong>Authors:</strong> {{ num_authors }}</li>
+    <li><strong>Games active:</strong> {{ num_books }}</li>
+    <li><strong>Players active:</strong> {{ num_instances }}</li>
+    <li><strong>Games finished:</strong> {{ num_instances_available }}</li>
+    <li><strong>Winners:</strong> {{ num_authors }}</li>
   </ul>
+<h2>Games</h2>
+<!-- 
+<p>To add a caption to a table, use the caption tag.</p>
+-->
+
+<table style="width:100%">
+  <tr>
+    <th>Game</th>
+    <th>Status</th>
+	<th>Winner</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>active</td>
+	<td>-</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>finished</td>
+	<td>me</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>finished</td>
+	<td>you</td>
+  </tr>
+</table>
+
+</body>
 {% endblock %}
+
+<!-- 
+<p>To add a caption to a table, use the caption tag.</p>
+-->
