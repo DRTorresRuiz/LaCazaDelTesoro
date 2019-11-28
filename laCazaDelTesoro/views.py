@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 
 # Import models needed
     # from .models import User
 
+@login_required(login_url='registration/')
 def index(request):
     ## Example of interaction with MongoDB
         # user = User.objects.createUser("JOSE")
