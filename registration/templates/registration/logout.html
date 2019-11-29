@@ -1,9 +1,0 @@
-{% if user.is_authenticated %}
-      <p>{{ user.username }}, our are still logged</p>
-     
-    {% else %}
-    <p>Yeah, we are aren't logged anymore!</p>
-      <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">
-        Login
-      </a>
-    {% endif %}
