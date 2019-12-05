@@ -36,10 +36,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'laCazaDelTesoro',
-    'social_django', #login with Google, facebook etc.
-    'registration',
-    'homepage',
-    'game',
 ]
 
 MIDDLEWARE = [ 
@@ -53,7 +49,6 @@ MIDDLEWARE = [
     # Simplified static file serving.
     # https://warehouse.python.org/project/whitenoise/
     # 'whitenoise.middleware.WhiteNoiseMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 # Simplified static file serving.
@@ -65,9 +60,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,8 +68,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect', 
             ],
         },
     },
@@ -129,50 +120,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
-### Settings specific for python-solical-auth
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
-SOCIAL_AUTH_STRATEGY = 'social_django.strategy.DjangoStrategy'
-SOCIAL_AUTH_STORAGE = 'social_django.models.DjangoStorage'
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
-
-SOCIAL_AUTH_PIPELINE = (
-    'social_core.pipeline.social_auth.social_details',
-    'social_core.pipeline.social_auth.social_uid',
-    'social_core.pipeline.social_auth.auth_allowed',
-    'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
-    'social_core.pipeline.user.create_user',
-    'social_core.pipeline.social_auth.associate_user',
-    'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
-)
-
-SOCIAL_AUTH_DISCONNECT_PIPELINE = (
-# Verifies that the social association can be disconnected from the current
-# user (ensure that the user login mechanism is not compromised by this
-# disconnection).
-#'social.pipeline.disconnect.allowed_to_disconnect',
-
-# Collects the social associations to disconnect.
-'social.pipeline.disconnect.get_entries',
-
-# Revoke any access_token when possible.
-'social.pipeline.disconnect.revoke_tokens',
-
-# Removes the social associations.
-'social.pipeline.disconnect.disconnect',
-)
-
-SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '835515855870-4e77gfr94b7rojvg4fa26s98d36o352f.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '732uOR7smkntZy1Xym9Cp9Fd'
-
-LOGIN_URL = '/auth/login/google-oauth2/'
-LOGOUT_URL = '/'
-LOGIN_REDIRECT_URL = '/'

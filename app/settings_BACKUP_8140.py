@@ -36,10 +36,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'laCazaDelTesoro',
+<<<<<<< HEAD
     'social_django', #login with Google, facebook etc.
     'registration',
+=======
+>>>>>>> 3c0764dc65a5b4aeaea5a08f2168377137cfc8af
     'homepage',
-    'game',
 ]
 
 MIDDLEWARE = [ 

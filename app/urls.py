@@ -27,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('registration/', include('registration.urls')),
     path('homepage/', include('homepage.urls')),
+    path('game/', include('game.urls')),
 ]
 
 # Use include() to add paths from the homepage application 
