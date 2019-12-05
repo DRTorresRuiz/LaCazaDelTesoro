@@ -26,4 +26,5 @@ urlpatterns = [
     path('', ctViews.index, name="index"),
     path('admin/', admin.site.urls),
     path('registration/', include('registration.urls')),
+    path('homepage/', include('homepage.urls')),
 ]

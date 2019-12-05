@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'laCazaDelTesoro',
     'social_django', #login with Google, facebook etc.
     'registration',
+    'homepage',
 ]
 
 MIDDLEWARE = [ 
