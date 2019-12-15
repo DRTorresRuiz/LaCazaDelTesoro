@@ -284,3 +284,12 @@ $RECYCLE.BIN/
 *.env
 
 # End of https://www.gitignore.io/api/linux,macos,django,pycharm,windows
+.idea/inspectionProfiles/profiles_settings.xml
+
+.idea/LaCazaDelTesoro.iml
+
+.idea/misc.xml
+
+.idea/modules.xml
+
+.idea/vcs.xml

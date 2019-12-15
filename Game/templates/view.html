@@ -1,0 +1,68 @@
+{% load leaflet_tags %}
+<html>
+    <head>
+        ...
+        {% leaflet_js %}
+        {% leaflet_css %}
+        <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+        <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    </head>
+    <body>
+
+        <style>
+            .leaflet-container {  /* all maps */
+                width:  600px;
+                height: 400px;
+            }
+            #specialbigmap {
+                height: 800px;
+            }
+            /* Resize the "display_raw" textbox */
+            .django-leaflet-raw-textarea {
+                width: 100%;
+            }
+        </style>
+
+        <div class="map">
+            {% leaflet_map "yourmap" %}
+        </div>
+
+        <script type="text/javascript">
+        var map;
+            window.addEventListener("map:init", function (e) {
+                var detail = e.detail;
+                // add marker
+                // L.marker([36.71995,-4.4248]).addTo(detail.map);
+
+                // search locations
+                L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                  attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(detail.map);
+                var geo = L.Control.Geocoder.nominatim({geocodingQueryParams:{countrycodes:"es"}});
+                L.Control.geocoder({geocoder: geo}).addTo(detail.map);
+
+                // click event
+                detail.map.on('click', function(e) {
+                    console.log(e.latlng);
+                    document.getElementById("lat").value = e.latlng.lat;
+                    document.getElementById("lon").value = e.latlng.lng;
+                    L.marker(e.latlng).addTo(detail.map);
+                });
+            }, false);
+
+        </script>
+
+    <!-- example data -->
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+        <form action="{% url 'game:save' %}" method="post">
+        {% csrf_token %}
+            <input type="text" name="lat" id="lat">
+            <input type="text" name="lon" id="lon">
+            <input type="submit" value="save">
+        </form>
+
+    </body>
+
+
+</html>

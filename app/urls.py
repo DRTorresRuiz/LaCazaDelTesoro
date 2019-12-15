@@ -14,15 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-
-admin.autodiscover()
+from django.urls import path, include
 
 # Import your views
 import laCazaDelTesoro.views as ctViews
 
+admin.autodiscover()
+
 # Add patterns to access to your views
 urlpatterns = [
     path('', ctViews.index, name="index"),
+    path('game/', include('Game.urls', namespace="game"), name="game"),
     path('admin/', admin.site.urls),
 ]
