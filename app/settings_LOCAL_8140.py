@@ -36,13 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'laCazaDelTesoro',
-    'Game.apps.GameConfig',
-    'leaflet',
-    'djgeojson',
     'social_django', #login with Google, facebook etc.
     'registration',
     'homepage',
-    'game',
 ]
 
 MIDDLEWARE = [ 
@@ -68,9 +64,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -128,25 +122,10 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
-LEAFLET_CONFIG = {
-    # conf here
-    # 'SPATIAL_EXTENT': (37.0, -4.80, 36,  -3.5),
-    'DEFAULT_CENTER': (36.7163185,-4.4789157),
-    'DEFAULT_ZOOM': 16,
-    'MIN_ZOOM': 5,
-    'MAX_ZOOM': 18,
-    'ATTRIBUTION_PREFIX': 'Powered by django-leaflet',
-    'SCALE': 'both',
-    'RESET_VIEW': False
-}
 
 ### Settings specific for python-solical-auth
 AUTHENTICATION_BACKENDS = (
