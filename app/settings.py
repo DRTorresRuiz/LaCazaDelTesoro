@@ -36,13 +36,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'laCazaDelTesoro',
-    'Game.apps.GameConfig',
+    #'Game.apps.GameConfig',
     'leaflet',
     'djgeojson',
     'social_django', #login with Google, facebook etc.
     'registration',
     'homepage',
-    'game',
+    'Game',
 ]
 
 MIDDLEWARE = [ 

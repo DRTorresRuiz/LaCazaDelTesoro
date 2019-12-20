@@ -1,13 +1,10 @@
-from django.contrib import admin
 from django.urls import path
 
-# Import your views
-import Game.views as game
+from . import views
 
-app_name = "game"
-
-# Add patterns to access to your views
 urlpatterns = [
-    path('', game.index, name="index"),
-    path('save', game.createGame, name="save")
-    ]
+    path('create/', views.create, name="create"),
+    path('view/', views.view, name="view"),
+    path('treasure/', views.treasure, name="treasure"),
+]
+

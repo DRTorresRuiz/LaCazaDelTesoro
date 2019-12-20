@@ -24,11 +24,13 @@ admin.autodiscover()
 # Add patterns to access to your views
 urlpatterns = [
     path('', ctViews.index, name="index"),
-    path('game/', include('Game.urls', namespace="game"), name="game"),
+    #path('game/', include('Game.urls', namespace="game"), name="game"),
+    #path('Game/', include('Game.urls', namespace="Game"), name="Game"),
     path('admin/', admin.site.urls),
     path('registration/', include('registration.urls')),
     path('homepage/', include('homepage.urls')),
-    path('game/', include('game.urls')),
+    #path('game/', include('game.urls')),
+    path('Game/', include('Game.urls')),
 ]
 
 '''

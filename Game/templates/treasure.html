@@ -10,7 +10,13 @@
     </style>
   </head>
   <body>
-    <h3>My Google Maps Demo</h3>
+    <h3>Treasure</h3>
+    {% block content %}
+      <h2>Treasure</h2>
+      <form method="POST" class="post-form">{% csrf_token %}
+        {{ form.as_p }}
+          <button type="submit" class="save btn btn-default">Save</button>
+       </form>
     <!--The div element for the map -->
     <div id="map"></div>
     <script>
@@ -33,5 +39,6 @@ function initMap() {
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAHCaVnPMaUAjAtjpINPxhmHfsr5876u6k&callback=initMap">
     </script>
+  {% endblock %}
   </body>
 </html>

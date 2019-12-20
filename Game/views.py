@@ -1,20 +1,14 @@
 from django.shortcuts import render
 
+from .models import GameForm
 
-# Create your views here.
-from Game.models import Game
+def view(request):
+    return render(request, 'view.html')
 
+def create(request):
+    form = GameForm()
+    return render(request, 'create.html', {'form':form})
 
-def index(request):
-    return render(request, "view.html")
-
-
-def createGame(request):
-    # prueba guardado coordenadas
-    lat = request.POST['lat']
-    lon = request.POST['lon']
-    newGame = Game()
-    newGame.name = 'prueba'
-    newGame.geolocation_center = lat, lon
-    newGame.save()
-    return render(request, "view.html")
+def treasure(request):
+    form = GameForm()
+    return render(request, 'treasure.html', {'form':form})
