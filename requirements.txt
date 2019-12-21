@@ -26,3 +26,5 @@ django_google_maps==0.11.0
 django-geojson==2.12.0
 django-leaflet==0.26.0
 jsonfield==2.0.2
+django-geoposition==0.3.0
+django-widget-tweaks==1.4.5

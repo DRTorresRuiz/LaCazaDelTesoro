@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'registration',
     'homepage',
     'Game',
+    'geoposition',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [ 
@@ -194,3 +196,13 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '732uOR7smkntZy1Xym9Cp9Fd'
 LOGIN_URL = '/auth/login/google-oauth2/'
 LOGOUT_URL = '/'
 LOGIN_REDIRECT_URL = '/'
+
+GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyAHCaVnPMaUAjAtjpINPxhmHfsr5876u6k'#'AIzaSyAkd6UV2ZaaCr0g3zcts8cmlgK3vcKq6ys'
+GEOPOSITION_MAP_OPTIONS = {
+    'minZoom': 3,
+    'maxZoom': 15,
+}
+
+GEOPOSITION_MARKER_OPTIONS = {
+    'cursor': 'move'
+}

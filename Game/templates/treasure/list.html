@@ -1,0 +1,33 @@
+{% extends "base_generic.html" %}
+{% block content %}
+  <h1>Treasure List</h1>
+  <div><a class="btn btn-primary" href={% url 'treasure_create' %}>New</a></div>
+  {% if treasure_list %}
+  <table cellpadding="10">
+      <tr>
+          <th>Name</th>
+          <th>Clue</th>
+          <th>Solution</th>
+          <th>Position</th>
+      </tr>
+    {% for treasure in treasure_list %}
+      <tr>
+          <td>
+            {{ treasure.name }}
+          </td>
+          <td>
+            {{ treasure.clue }}
+          </td>
+          <td>
+            {{ treasure.solution }}
+          </td>
+          <td>
+            {{ treasure.position }}
+          </td>
+      </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+    <p>There are no treasures.</p>
+  {% endif %}
+{% endblock %}
