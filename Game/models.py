@@ -31,7 +31,7 @@ class Game(models.Model):
 class GameForm(forms.ModelForm):
     class Meta:
         model = Game
-        fields = ('name',)
+        fields = ('name','address_center','position','radius')
 
 
 class Treasure(models.Model):
