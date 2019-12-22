@@ -22,16 +22,18 @@ class Game(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE,related_name='creator_game')
     registration_on = models.DateTimeField
     address_center = models.CharField(max_length = 100)
-    position = GeopositionField()
-    radius = models.IntegerField()
-    status = EnumChoiceField(Status)
+    north_east_bound = GeopositionField(null=True)
+    south_west_bound = GeopositionField(null=True)
+    status = EnumChoiceField(Status, default=Status.P)
+
     def __str__(self):
         return self.name
+
 
 class GameForm(forms.ModelForm):
     class Meta:
         model = Game
-        fields = ('name','address_center','position','radius')
+        fields = ('name','address_center','north_east_bound','south_west_bound')
 
 
 class Treasure(models.Model):
@@ -41,6 +43,7 @@ class Treasure(models.Model):
     address = models.CharField(max_length = 100)
     position = GeopositionField()
     treasure_img = models.ImageField(upload_to='treasure/%Y/%m/%d')
+    game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='game')
 
     def __str__(self):
         return self.name

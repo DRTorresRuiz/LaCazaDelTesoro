@@ -72,17 +72,23 @@
       var map;
       var infoWindow;
 
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: 36.7090448, lng: -4.4791599},
-          zoom: 15
-        });
+      function getRectangleBounds() {
+        var ne = rectangle.getBounds().getNorthEast();
+        var sw = rectangle.getBounds().getSouthWest();
+
+        document.getElementById("id_north_east_bound_0").value = ne.lat();
+        document.getElementById("id_north_east_bound_1").value = ne.lng();
+        document.getElementById("id_south_west_bound_0").value = sw.lat();
+        document.getElementById("id_south_west_bound_1").value = sw.lng();
+      }
+
+      function setRectangle(lat, lng) {
 
         var bounds = {
-          north: 36.71211232849928,
-          south: 36.70480734289016,
-          east: -4.469789600000013,
-          west: -4.483574002221644,
+          north: lat + 0.001,
+          south: lat - 0.001,
+          east: lng + 0.001,
+          west: lng - 0.001,
         };
 
         // Define the rectangle and set its editable property to true.
@@ -93,9 +99,23 @@
         });
 
         rectangle.setMap(map);
+        getRectangleBounds();
 
         // Add an event listener on the rectangle.
         rectangle.addListener('bounds_changed', showNewRect);
+    }
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: {lat: 36.7090448, lng: -4.4791599},
+          zoom: 15,
+          disableDoubleClickZoom: true
+        });
+
+        map.addListener('dblclick', function(e) {
+            if (rectangle) { rectangle.setMap(null); }
+            setRectangle(e.latLng.lat(), e.latLng.lng());
+        });
 
         // Define an info window on the map.
         infoWindow = new google.maps.InfoWindow();
@@ -104,6 +124,7 @@
 
       /** @this {google.maps.Rectangle} */
       function showNewRect(event) {
+        getRectangleBounds();
         var ne = rectangle.getBounds().getNorthEast();
         var sw = rectangle.getBounds().getSouthWest();
 

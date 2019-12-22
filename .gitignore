@@ -83,6 +83,7 @@ target/
 # pyenv
 .python-version
 env/
+venv2
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
@@ -293,3 +294,5 @@ $RECYCLE.BIN/
 .idea/modules.xml
 
 .idea/vcs.xml
+get-pip.py
+.idea/Proyecto.iml
