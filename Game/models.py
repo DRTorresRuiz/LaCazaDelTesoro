@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, IntEnum
 from django import forms
 from django.db import models
 from django_google_maps import fields as map_fields
@@ -12,9 +12,15 @@ def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
     return 'user_{0}/{1}'.format(instance.user.id, filename)
 
-class Status(Enum):
-    F = 'Finalized'
-    P = 'In Progresss'
+
+class Status(IntEnum):
+    Finalized = 1
+    InProgress = 2
+
+    @classmethod
+    def choices(cls):
+        return [(key.value, key.name) for key in cls]
+
 
 class Game(models.Model):
     name = models.CharField(max_length=100)
@@ -24,7 +30,7 @@ class Game(models.Model):
     address_center = models.CharField(max_length = 100)
     north_east_bound = GeopositionField(null=True)
     south_west_bound = GeopositionField(null=True)
-    status = EnumChoiceField(Status, default=Status.P)
+    status = models.IntegerField(choices=Status.choices(), default=Status.InProgress)
 
     def __str__(self):
         return self.name

@@ -3,7 +3,7 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 
-from .models import GameForm
+from .models import GameForm, Game
 from .models import TreasureForm
 from .models import Treasure
 from django.shortcuts import render_to_response, get_object_or_404, redirect
@@ -20,21 +20,31 @@ def create(request):
         form = GameForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-
+            obj = form.save(commit=False)
+            obj.creator = request.user
             obj = form.save()
+
             return HttpResponseRedirect(reverse('treasure_create', kwargs={'id': obj.id}))
-    else :
+    else:
         form = GameForm()
     return render(request, 'create.html', {'form':form})
 
 
 def treasure_create(request, id):
     form = TreasureForm(request.POST, request.FILES)
-    if form.is_valid():
-        form.save()
-        #return HttpResponseRedirect('treasure/list.html')
-        return redirect('treasure_list')
-    return render(request, 'treasure/create.html', {'form':form})
+    if request.method == 'POST':
+        if form.is_valid():
+            treasure = form.save(commit=False)
+            try:
+                treasure.game = Game.objects.get(id=id)
+                treasure.save()
+            except Game.DoesNotExist:
+                pass
+
+            return HttpResponseRedirect(reverse('treasure_list'))
+            #return redirect('treasure_list')
+    else:
+        return render(request, 'treasure/create.html', {'form':form})
 
 
 def treasure_list(request):

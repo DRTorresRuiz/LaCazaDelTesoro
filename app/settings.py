@@ -94,7 +94,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'AUTH_MECHANISM': 'SCRAM-SHA-1',
-        'HOST': config('MONGO_URI', default='localhost')
+        'HOST': config('MONGO_URI', default='localhost'),
     }
 }
 
