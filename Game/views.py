@@ -40,13 +40,22 @@ def treasure_create(request, id):
                 treasure.save()
             except Game.DoesNotExist:
                 pass
-
-            return HttpResponseRedirect(reverse('treasure_list'))
-            #return redirect('treasure_list')
+            # return HttpResponseRedirect(reverse('treasure_list'))
+            treasures = treasure.game.game.all()
+            return render(request, 'treasure/create.html',
+                          {'form': form, 'treasure_list': treasures, 'game_id': treasure.game.id})
+        else:
+            game = Game.objects.get(id=id)
+            return render(request, 'treasure/create.html', {'form': form, 'treasure_list': game.game.all(), 'game_id': id})
     else:
-        return render(request, 'treasure/create.html', {'form':form})
+        game = get_object_or_404(Game, id=id)
+        treasures = game.game.all()
+        return render(request, 'treasure/create.html', {'form': form, 'treasure_list': treasures, 'game_id': id})
 
 
-def treasure_list(request):
-    treasure_list = Treasure.objects.all().order_by('id')
+def treasure_list(request, game_id=0):
+    if game_id != 0:
+        treasure_list = Treasure.objects.filter(game=game_id).order_by('id')
+    else:
+        treasure_list = Treasure.objects.all().order_by('id')
     return render(request,'treasure/list.html', {'treasure_list':treasure_list})

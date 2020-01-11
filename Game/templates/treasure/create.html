@@ -61,6 +61,34 @@
                </form>
         {% endblock %}
         </td>
+        <td style="vertical-align: super;">
+            <h2>Treasures list</h2>
+            <table cellpadding="10">
+              <tr>
+                  <th>Name</th>
+                  <th>Clue</th>
+                  <th>Solution</th>
+                  <th>Position</th>
+              </tr>
+            {% for treasure in treasure_list %}
+              <tr>
+                  <td>
+                    {{ treasure.name }}
+                  </td>
+                  <td>
+                    {{ treasure.clue }}
+                  </td>
+                  <td>
+                    {{ treasure.solution }}
+                  </td>
+                  <td>
+                    {{ treasure.position }}
+                  </td>
+              </tr>
+            {% endfor %}
+          </table>
+            <a href="{% url 'treasure_list' game_id=game_id %}"><button type="button" class="save btn btn-default">Finish</button></a>
+        </td>
     </tr>
 </table>
 <script>

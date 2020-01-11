@@ -48,7 +48,7 @@ class Treasure(models.Model):
     solution = models.TextField()
     address = models.CharField(max_length = 100)
     position = GeopositionField()
-    treasure_img = models.ImageField(upload_to='treasure/%Y/%m/%d')
+    treasure_img = models.ImageField(upload_to='treasure/%Y/%m/%d', blank=True, null=True)
     game = models.ForeignKey(Game, on_delete=models.CASCADE, related_name='game')
 
     def __str__(self):
