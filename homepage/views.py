@@ -7,25 +7,16 @@ from Game.models import Game
 #from catalog.models import Book, Author, BookInstance, Genre
 
 def index(request):
-    """View function for home page of site."""
-
-    # Generate counts of some of the main objects
-    num_books = 1
-    num_instances = 2
-    
-    # Available books (status = 'a')
-    num_instances_available = 3
-    
-    # The 'all()' is implied by default.    
-    num_authors = 4
 
     games = Game.objects.all()
-    
+    num_games_finished = len(Game.objects.filter(status = 1))
+    num_games_active = len(Game.objects.filter(status = 2))
+    num_winners = len(set(filter(None.__ne__, Game.objects.all().values_list('winner', flat=True))))
+
     context = {
-        'num_books': num_books,
-        'num_instances': num_instances,
-        'num_instances_available': num_instances_available,
-        'num_authors': num_authors,
+        'num_games_finished': num_games_finished,
+        'num_games_active': num_games_active,
+        'num_winners': num_winners,
 	'games': games
     }
 
