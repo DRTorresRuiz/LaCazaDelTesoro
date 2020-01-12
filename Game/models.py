@@ -31,6 +31,7 @@ class Game(models.Model):
     north_east_bound = GeopositionField(null=True)
     south_west_bound = GeopositionField(null=True)
     status = models.IntegerField(choices=Status.choices(), default=Status.InProgress)
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='winner_game', null=True)
 
     def __str__(self):
         return self.name

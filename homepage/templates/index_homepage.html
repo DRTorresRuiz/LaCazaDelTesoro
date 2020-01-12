@@ -22,21 +22,21 @@
     <th>Status</th>
 	<th>Winner</th>
   </tr>
-  <tr>
-    <td>1</td>
-    <td>active</td>
-	<td>-</td>
-  </tr>
-  <tr>
-    <td>2</td>
-    <td>finished</td>
-	<td>me</td>
-  </tr>
-  <tr>
-    <td>3</td>
-    <td>finished</td>
-	<td>you</td>
-  </tr>
+{% for game in games  %}
+<tr>
+ <td>{{ game.name }}</td>
+{% if game.status == 2 %} 
+ <td>Active</td>
+{% else %}
+ <td>Finished</td>
+{% endif %}
+{% if game.winner is None %}
+ <td>No winner yet.</td>
+{% else %}
+ <td>{{game.winner}}</td> 
+{% endif %}
+</tr>
+{% endfor %}
 </table>
 
 <div>
