@@ -1,0 +1,13 @@
+<html>
+ <head></head>
+ <body>
+  <h1>{{game.name}}</h1>
+  <div><p>Created by {{game.creator}}</p></div>
+  <div>Show map</div>
+  <div>
+   {% if user.username == game.creator %}
+   <p>Show additional attributes of game</p>
+   {% endif %}
+  </div> 
+ </body>
+</html>

@@ -10,8 +10,10 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 
 
-def view(request):
-    return render(request, 'view.html')
+def details(request, game_id):
+    game = Game.objects.get(pk = game_id)
+    context = {"game": game}
+    return render(request, 'details.html', context=context)
 
 
 def create(request):

@@ -23,7 +23,7 @@
   </tr>
 {% for game in games  %}
 <tr>
- <td>{{ game.name }}</td>
+ <td><a href="{{ game.get_absolute_url }}">{{ game.name }}</a></td>
 {% if game.status == 2 %} 
  <td>Active</td>
 {% else %}
@@ -40,9 +40,6 @@
 
 <div>
 	<a class="btn btn-primary" href="{% url 'create' %}">Create a game</a>
-</div>
-<div>
-	<a class="btn btn-primary" href={% url 'view' %}>View the map</a>
 </div>
 <div>
 	<a class="btn btn-primary" href={% url 'treasure_list' %}>Treasure</a>

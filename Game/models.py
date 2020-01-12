@@ -7,6 +7,7 @@ from django_enum_choices.fields import EnumChoiceField
 from django.contrib.auth.models import Permission, User
 #from django.forms import ModelForm
 from geoposition.fields import GeopositionField
+from django.urls import reverse_lazy
 
 def user_directory_path(instance, filename):
     # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
@@ -35,7 +36,9 @@ class Game(models.Model):
 
     def __str__(self):
         return self.name
-
+    
+    def get_absolute_url(self):
+        return reverse_lazy('details', kwargs={'game_id': self.id})
 
 class GameForm(forms.ModelForm):
     class Meta:
