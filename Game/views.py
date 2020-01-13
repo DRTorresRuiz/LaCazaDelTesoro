@@ -2,19 +2,34 @@ from django.shortcuts import render
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
+from django.http import HttpResponse
 
 from .models import GameForm, Game
 from .models import TreasureForm
 from .models import Treasure
+from .models import Player_Treasure_Found
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 
-
 def details(request, game_id):
-    game = Game.objects.get(pk = game_id)
-    context = {"game": game}
+    gameObj = Game.objects.get(pk = game_id)
+    all_treasures = Treasure.objects.filter(game = gameObj)
+    found_treasures_obj = Player_Treasure_Found.objects.filter(game_id = gameObj)
+    found_treasures = found_treasures_obj.values_list('treasure_id', flat=True)
+    context = {'game': gameObj, 'all_treasures': all_treasures, 'found_treasures_obj': found_treasures_obj, 'found_treasures': found_treasures, }
     return render(request, 'details.html', context=context)
 
+def join(request, game_id):
+    game = Game.objects.get(pk = game_id)
+    game.player.add(request.user)
+    game.save()
+    return redirect('homepage:index')
+
+def leave(request, game_id):
+    game = Game.objects.get(pk = game_id)
+    game.player.remove(request.user)
+    game.save()
+    return redirect('homepage:index')
 
 def create(request):
     if request.method == 'POST':

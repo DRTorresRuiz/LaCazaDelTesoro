@@ -23,7 +23,7 @@
   </tr>
 {% for game in games  %}
 <tr>
- <td><a href="{{ game.get_absolute_url }}">{{ game.name }}</a></td>
+ <td><a href="{{ game.get_details_url }}">{{ game.name }}</a></td>
 {% if game.status == 2 %} 
  <td>Active</td>
 {% else %}
@@ -33,6 +33,11 @@
  <td>No winner yet.</td>
 {% else %}
  <td>{{game.winner}}</td> 
+{% endif %}
+{% if user in game.player.all %}
+ <td><a href="{{ game.get_leave_url }}">Leave</a></td>
+{% else %}
+ <td><a href="{{ game.get_join_url }}">Join</a></td>
 {% endif %}
 </tr>
 {% endfor %}

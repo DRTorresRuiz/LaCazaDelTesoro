@@ -1,13 +1,45 @@
+<!DOCTYPE html>
 <html>
- <head></head>
+ <head>
+ </head>
  <body>
-  <h1>{{game.name}}</h1>
-  <div><p>Created by {{game.creator}}</p></div>
-  <div>Show map</div>
-  <div>
-   {% if user.username == game.creator %}
-   <p>Show additional attributes of game</p>
-   {% endif %}
-  </div> 
+ <h1>{{ game.name }}</h1>
+<p>Show Map</p>
+{% if game.creator.username == user.username %}
+<table>
+ <tr>
+  <th>Player</th>
+  <th>Found Treasures</th>
+ </tr>
+ {% if game.player %}
+ {% for player in game.player.all %}
+ <tr>
+ <td>{{ player.username }}</td>
+ <td>
+   <ul>
+    {% for treasure in found_treasures_obj %}
+    {% if treasure.player == player %}
+     <li>{{ treasure.treasure_id.name }}</li>
+    {% endif %}
+    {% endfor %}
+   </ul>
+ </td>
+ </tr>
+ {% endfor %}
+ {% else %}
+ <tr><td>No players</td><td></td></tr>
+ {% endif %}
+</table>
+<div>
+<h3>Not found treasures</h3>
+<ul>
+{% for treasure in all_treasures %}
+{% if treasure not in found_treasures %}
+ <li>{{ treasure.name }}</li>
+{% endif %}
+{% endfor %}
+</ul>
+</div>
+{% endif %}
  </body>
 </html>

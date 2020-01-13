@@ -37,8 +37,14 @@ class Game(models.Model):
     def __str__(self):
         return self.name
     
-    def get_absolute_url(self):
+    def get_details_url(self):
         return reverse_lazy('details', kwargs={'game_id': self.id})
+    
+    def get_join_url(self):
+        return reverse_lazy('join', kwargs={'game_id': self.id})
+
+    def get_leave_url(self):
+        return reverse_lazy('leave', kwargs={'game_id': self.id})
 
 class GameForm(forms.ModelForm):
     class Meta:
