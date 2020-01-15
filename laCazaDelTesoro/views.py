@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 
@@ -18,4 +18,4 @@ def index(request):
     ## Example of HttpResponse
         # return HttpResponse('Hello from Python!')
 
-    return render(request, "index.html")
+    return redirect('homepage:index')
