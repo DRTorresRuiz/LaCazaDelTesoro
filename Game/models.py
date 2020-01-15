@@ -28,7 +28,7 @@ class Game(models.Model):
     player = models.ManyToManyField(User)
     creator = models.ForeignKey(User, on_delete=models.CASCADE,related_name='creator_game')
     registration_on = models.DateTimeField
-    address_center = models.CharField(max_length = 100)
+    address_center = GeopositionField(null=False)
     north_east_bound = GeopositionField(null=True)
     south_west_bound = GeopositionField(null=True)
     status = models.IntegerField(choices=Status.choices(), default=Status.InProgress)
