@@ -213,7 +213,6 @@ GEOPOSITION_MARKER_OPTIONS = {
 # for chat_app
 ASGI_APPLICATION = "app.routing.application"
 
-# mysite/settings.py
 # Channels
 CHANNEL_LAYERS = {
     'default': {

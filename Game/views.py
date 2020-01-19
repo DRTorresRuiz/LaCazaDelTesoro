@@ -13,10 +13,11 @@ from django.http import HttpResponseRedirect
 
 def details(request, game_id):
     gameObj = Game.objects.get(pk = game_id)
+    room_name = game_id
     all_treasures = Treasure.objects.filter(game = gameObj)
     found_treasures_obj = Player_Treasure_Found.objects.filter(game_id = gameObj)
     found_treasures = found_treasures_obj.values_list('treasure_id', flat=True)
-    context = {'game': gameObj, 'all_treasures': all_treasures, 'found_treasures_obj': found_treasures_obj, 'found_treasures': found_treasures, }
+    context = {'game': gameObj, 'all_treasures': all_treasures, 'found_treasures_obj': found_treasures_obj, 'found_treasures': found_treasures, 'room_name': room_name, }
     return render(request, 'details.html', context=context)
 
 def join(request, game_id):
@@ -30,6 +31,11 @@ def leave(request, game_id):
     game.player.remove(request.user)
     game.save()
     return redirect('homepage:index')
+
+def chat(request, game_id):
+    room_name = game_id
+    context = {'room_name': room_name}
+    return render(request, 'chat/room.html', context = context)
 
 def create(request):
     if request.method == 'POST':

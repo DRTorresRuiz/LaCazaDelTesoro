@@ -45,6 +45,9 @@ class Game(models.Model):
 
     def get_leave_url(self):
         return reverse_lazy('leave', kwargs={'game_id': self.id})
+   
+    def get_chat_url(self):
+        return reverse_lazy('chat', kwargs={'game_id': self.id})
 
 class GameForm(forms.ModelForm):
     class Meta:
@@ -63,7 +66,7 @@ class Treasure(models.Model):
 
     def __str__(self):
         return self.name
-
+    
 class TreasureForm(forms.ModelForm):
     class Meta:
         model = Treasure
