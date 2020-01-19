@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'Game',
     'geoposition',
     'widget_tweaks',
+		# for chat_app
+		'channels',
+		'chat',
 ]
 
 MIDDLEWARE = [ 
@@ -205,4 +208,18 @@ GEOPOSITION_MAP_OPTIONS = {
 
 GEOPOSITION_MARKER_OPTIONS = {
     'cursor': 'move'
+}
+
+# for chat_app
+ASGI_APPLICATION = "app.routing.application"
+
+# mysite/settings.py
+# Channels
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
 }
