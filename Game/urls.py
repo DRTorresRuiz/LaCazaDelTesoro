@@ -11,6 +11,6 @@ urlpatterns = [
     path('treasure/new/<int:id>/', views.treasure_create, name="treasure_create"),
     path('treasure/list', views.treasure_list, name="treasure_list"),
     url(r'treasure/list/(?P<game_id>[0-9]+)/$', views.treasure_list, name='treasure_list'),
-
+    url('^found/(?P<treasure_id>\d+)/$', views.found, name="found"),
 ]
 

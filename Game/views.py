@@ -3,20 +3,22 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
 from django.http import HttpResponse
+from datetime import datetime
 
 from .models import GameForm, Game
 from .models import TreasureForm
 from .models import Treasure
-from .models import Player_Treasure_Found
+from .models import Player_Treasure_Found, Player_Treasure_Found_Form
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 
 def details(request, game_id):
     gameObj = Game.objects.get(pk = game_id)
+    room_name = game_id
     all_treasures = Treasure.objects.filter(game = gameObj)
     found_treasures_obj = Player_Treasure_Found.objects.filter(game_id = gameObj)
     found_treasures = found_treasures_obj.values_list('treasure_id', flat=True)
-    context = {'game': gameObj, 'all_treasures': all_treasures, 'found_treasures_obj': found_treasures_obj, 'found_treasures': found_treasures, }
+    context = {'game': gameObj, 'all_treasures': all_treasures, 'found_treasures_obj': found_treasures_obj, 'found_treasures': found_treasures, 'room_name': room_name, }
     return render(request, 'details.html', context=context)
 
 def join(request, game_id):
@@ -30,6 +32,23 @@ def leave(request, game_id):
     game.player.remove(request.user)
     game.save()
     return redirect('homepage:index')
+
+def found(request, treasure_id):
+    treasure = Treasure.objects.get(pk = treasure_id)
+    if request.method == 'POST':
+        form = Player_Treasure_Found_Form(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.treasure_id = treasure
+            obj.player = request.user
+            obj.prove_date = datetime.now()
+            obj.game_id = treasure.game
+            obj = form.save()
+            return redirect('homepage:index')
+    else:
+        form = Player_Treasure_Found_Form()
+    context = { 'form': form, 'treasure': treasure,  }
+    return render(request, 'treasure/found.html', context = context)
 
 def create(request):
     if request.method == 'POST':

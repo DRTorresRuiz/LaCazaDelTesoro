@@ -17,7 +17,22 @@
   var center = {lat: {{ game.address_center.latitude }}, lng: {{ game.address_center.longitude }}};
   var map = new google.maps.Map(
   document.getElementById('map'), {zoom: 10, center: center});
-  var marker = new google.maps.Marker({position: center, map: map});
+  var marker = new google.maps.Marker({position: center, map: map}); 
+  var markers = []
+  {% for treasure in all_treasures %}
+  var position = {lat: {{ treasure.position.latitude }}, lng: {{ treasure.position.longitude }}};
+  {% if treasure in found_treasures %}
+  var treasure_marker = new google.maps.Marker({position: position, map: map, icon: {
+   url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+  }});
+  {% else %}
+  var treasure_marker = new google.maps.Marker({position: position, map: map, icon: {
+    url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+  }});
+  {% endif %}
+  markers.push(treasure_marker);
+  {% endfor  %}
+  var markerClusterer = new MarkerClusterer(map, markers);
  }
  </script>
  <script async defer
@@ -50,14 +65,16 @@
 </table>
 <div>
 <h3>Not found treasures</h3>
-<ul>
+<table>
 {% for treasure in all_treasures %}
 {% if treasure not in found_treasures %}
- <li>{{ treasure.name }}</li>
+ <tr><td>{{ treasure.name }}</td><td><a href="{{ treasure.get_found_url }}">I found it!</a></td></tr>
 {% endif %}
 {% endfor %}
-</ul>
+</table>
 </div>
 {% endif %}
+{% include "chat/room.html" %}
+
  </body>
 </html>

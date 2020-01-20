@@ -45,6 +45,9 @@ class Game(models.Model):
 
     def get_leave_url(self):
         return reverse_lazy('leave', kwargs={'game_id': self.id})
+   
+    def get_chat_url(self):
+        return reverse_lazy('chat', kwargs={'game_id': self.id})
 
 class GameForm(forms.ModelForm):
     class Meta:
@@ -63,7 +66,10 @@ class Treasure(models.Model):
 
     def __str__(self):
         return self.name
-
+    
+    def get_found_url(self):
+        return reverse_lazy('found', kwargs={'treasure_id': self.id})
+    
 class TreasureForm(forms.ModelForm):
     class Meta:
         model = Treasure
@@ -80,3 +86,8 @@ class Player_Treasure_Found(models.Model):
     player = models.ForeignKey(User, on_delete=models.CASCADE)
     prove_img = models.ImageField(upload_to=user_directory_path)
     prove_date = models.DateTimeField()
+
+class Player_Treasure_Found_Form(forms.ModelForm):
+    class Meta:
+        model = Player_Treasure_Found
+        fields = ('prove_img', )
