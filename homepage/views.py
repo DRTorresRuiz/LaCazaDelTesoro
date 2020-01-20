@@ -1,10 +1,10 @@
 from django.shortcuts import render
 
+from django.contrib.auth.decorators import login_required
+
 from Game.models import Game
 
 # Create your views here.
-
-#from catalog.models import Book, Author, BookInstance, Genre
 
 def index(request):
 
