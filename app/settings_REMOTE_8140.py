@@ -36,18 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'laCazaDelTesoro',
-    #'Game.apps.GameConfig',
-    'leaflet',
-    'djgeojson',
-    'social_django', #login with Google, facebook etc.
-    'registration',
     'homepage',
-    'Game',
-    'geoposition',
-    'widget_tweaks',
-		# for chat_app
-		'channels',
-		'chat',
 ]
 
 MIDDLEWARE = [ 
@@ -61,7 +50,6 @@ MIDDLEWARE = [
     # Simplified static file serving.
     # https://warehouse.python.org/project/whitenoise/
     # 'whitenoise.middleware.WhiteNoiseMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 # Simplified static file serving.
@@ -83,8 +71,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect', 
             ],
         },
     },
@@ -97,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'AUTH_MECHANISM': 'SCRAM-SHA-1',
-        'HOST': config('MONGO_URI', default='localhost'),
+        'HOST': config('MONGO_URI', default='localhost')
     }
 }
 
@@ -133,92 +119,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
-LEAFLET_CONFIG = {
-    # conf here
-    # 'SPATIAL_EXTENT': (37.0, -4.80, 36,  -3.5),
-    'DEFAULT_CENTER': (36.7163185,-4.4789157),
-    'DEFAULT_ZOOM': 16,
-    'MIN_ZOOM': 5,
-    'MAX_ZOOM': 18,
-    'ATTRIBUTION_PREFIX': 'Powered by django-leaflet',
-    'SCALE': 'both',
-    'RESET_VIEW': False
-}
-
-### Settings specific for python-solical-auth
-AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-)
-
-SOCIAL_AUTH_STRATEGY = 'social_django.strategy.DjangoStrategy'
-SOCIAL_AUTH_STORAGE = 'social_django.models.DjangoStorage'
-SOCIAL_AUTH_URL_NAMESPACE = 'social'
-
-SOCIAL_AUTH_PIPELINE = (
-    'social_core.pipeline.social_auth.social_details',
-    'social_core.pipeline.social_auth.social_uid',
-    'social_core.pipeline.social_auth.auth_allowed',
-    'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
-    'social_core.pipeline.user.create_user',
-    'social_core.pipeline.social_auth.associate_user',
-    'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
-)
-
-SOCIAL_AUTH_DISCONNECT_PIPELINE = (
-# Verifies that the social association can be disconnected from the current
-# user (ensure that the user login mechanism is not compromised by this
-# disconnection).
-#'social.pipeline.disconnect.allowed_to_disconnect',
-
-# Collects the social associations to disconnect.
-'social.pipeline.disconnect.get_entries',
-
-# Revoke any access_token when possible.
-'social.pipeline.disconnect.revoke_tokens',
-
-# Removes the social associations.
-'social.pipeline.disconnect.disconnect',
-)
-
-SOCIAL_AUTH_ADMIN_USER_SEARCH_FIELDS = ['username', 'first_name', 'email']
-
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '835515855870-4e77gfr94b7rojvg4fa26s98d36o352f.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '732uOR7smkntZy1Xym9Cp9Fd'
-
-LOGIN_URL = '/auth/login/google-oauth2/'
-LOGOUT_URL = '/'
-LOGIN_REDIRECT_URL = '/homepage/'
-
-GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyAHCaVnPMaUAjAtjpINPxhmHfsr5876u6k'#'AIzaSyAkd6UV2ZaaCr0g3zcts8cmlgK3vcKq6ys'
-GEOPOSITION_MAP_OPTIONS = {
-    'minZoom': 3,
-    'maxZoom': 15,
-}
-
-GEOPOSITION_MARKER_OPTIONS = {
-    'cursor': 'move'
-}
-
-# for chat_app
-ASGI_APPLICATION = "app.routing.application"
-
-# Channels
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
-}

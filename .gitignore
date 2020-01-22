@@ -83,6 +83,7 @@ target/
 # pyenv
 .python-version
 env/
+venv2
 
 # pipenv
 #   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
@@ -284,3 +285,14 @@ $RECYCLE.BIN/
 *.env
 
 # End of https://www.gitignore.io/api/linux,macos,django,pycharm,windows
+.idea/inspectionProfiles/profiles_settings.xml
+
+.idea/LaCazaDelTesoro.iml
+
+.idea/misc.xml
+
+.idea/modules.xml
+
+.idea/vcs.xml
+get-pip.py
+.idea/Proyecto.iml

@@ -1,0 +1,59 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h1>Home Page</h1>
+  <p>Welcome to home page of the Malaga University Cloud Development Project by <em>Grupo K</em>!</p>
+  <h2>Dynamic content of Games</h2>
+  <p>The Game has the following record counts:</p>
+  <ul>
+    <li><strong>Games active:</strong> {{ num_games_active }}</li>
+    <li><strong>Games finished:</strong> {{ num_games_finished }}</li>
+    <li><strong>Winners:</strong> {{ num_winners }}</li>
+  </ul>
+<h2>Games</h2>
+<!-- 
+<p>To add a caption to a table, use the caption tag.</p>
+-->
+
+<table style="width:100%">
+  <tr>
+  <th>Game</th>
+	<th>Status</th>
+	<th>Winner</th>
+	<th>Join</th>
+  </tr>
+{% for game in games  %}
+<tr>
+ <td><a href="{{ game.get_details_url }}">{{ game.name }}</a></td>
+{% if game.status == 2 %} 
+ <td>Active</td>
+{% else %}
+ <td>Finished</td>
+{% endif %}
+{% if game.winner is None %}
+ <td>No winner yet.</td>
+{% else %}
+ <td>{{game.winner}}</td> 
+{% endif %}
+{% if user in game.player.all %}
+ <td><a href="{{ game.get_leave_url }}">Leave</a></td>
+{% else %}
+ <td><a href="{{ game.get_join_url }}">Join</a></td>
+{% endif %}
+</tr>
+{% endfor %}
+</table>
+
+<div>
+	<a class="btn btn-primary" href="{% url 'create' %}">Create a game</a>
+</div>
+<div>
+	<a class="btn btn-primary" href={% url 'treasure_list' %}>Treasure</a>
+</div>
+</body>
+
+{% endblock %}
+
+<!-- 
+<p>To add a caption to a table, use the caption tag.</p>
+-->

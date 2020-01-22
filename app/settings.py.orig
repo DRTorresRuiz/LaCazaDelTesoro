@@ -36,18 +36,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'laCazaDelTesoro',
-    #'Game.apps.GameConfig',
-    'leaflet',
-    'djgeojson',
+<<<<<<< HEAD
     'social_django', #login with Google, facebook etc.
     'registration',
+=======
+>>>>>>> 3c0764dc65a5b4aeaea5a08f2168377137cfc8af
     'homepage',
-    'Game',
-    'geoposition',
-    'widget_tweaks',
-		# for chat_app
-		'channels',
-		'chat',
 ]
 
 MIDDLEWARE = [ 
@@ -97,7 +91,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'AUTH_MECHANISM': 'SCRAM-SHA-1',
-        'HOST': config('MONGO_URI', default='localhost'),
+        'HOST': config('MONGO_URI', default='localhost')
     }
 }
 
@@ -133,25 +127,10 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
-LEAFLET_CONFIG = {
-    # conf here
-    # 'SPATIAL_EXTENT': (37.0, -4.80, 36,  -3.5),
-    'DEFAULT_CENTER': (36.7163185,-4.4789157),
-    'DEFAULT_ZOOM': 16,
-    'MIN_ZOOM': 5,
-    'MAX_ZOOM': 18,
-    'ATTRIBUTION_PREFIX': 'Powered by django-leaflet',
-    'SCALE': 'both',
-    'RESET_VIEW': False
-}
 
 ### Settings specific for python-solical-auth
 AUTHENTICATION_BACKENDS = (
@@ -198,27 +177,4 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '732uOR7smkntZy1Xym9Cp9Fd'
 
 LOGIN_URL = '/auth/login/google-oauth2/'
 LOGOUT_URL = '/'
-LOGIN_REDIRECT_URL = '/homepage/'
-
-GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyAHCaVnPMaUAjAtjpINPxhmHfsr5876u6k'#'AIzaSyAkd6UV2ZaaCr0g3zcts8cmlgK3vcKq6ys'
-GEOPOSITION_MAP_OPTIONS = {
-    'minZoom': 3,
-    'maxZoom': 15,
-}
-
-GEOPOSITION_MARKER_OPTIONS = {
-    'cursor': 'move'
-}
-
-# for chat_app
-ASGI_APPLICATION = "app.routing.application"
-
-# Channels
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
-        },
-    },
-}
+LOGIN_REDIRECT_URL = '/'
