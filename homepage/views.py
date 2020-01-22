@@ -6,6 +6,7 @@ from Game.models import Game
 
 # Create your views here.
 
+@login_required(login_url='/registration/')
 def index(request):
 
     games = Game.objects.all()
