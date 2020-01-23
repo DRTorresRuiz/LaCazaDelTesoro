@@ -45,9 +45,8 @@ INSTALLED_APPS = [
     'Game',
     'geoposition',
     'widget_tweaks',
-		# for chat_app
-		'channels',
-		'chat',
+    'channels', #chat
+    'chat', #chat
 ]
 
 MIDDLEWARE = [ 
@@ -219,8 +218,7 @@ CHANNEL_LAYERS = {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
             "hosts": [
-                 ('127.0.0.1', 6379),
-                 ('lacazadeltesoro.herokuapp.com', 6379)
+                 "redis://h:p5144ec7a5bd976820a4a6eaa179115ab1d5ad9b9aca2b74a0a2afe0db82adf6a@ec2-3-216-81-30.compute-1.amazonaws.com:26689"
              ],
         },
     },
