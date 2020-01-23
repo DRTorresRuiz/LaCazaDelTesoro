@@ -1,13 +1,12 @@
 \BOOKMARK [1][-]{section.1}{Introduction}{}% 1
 \BOOKMARK [1][-]{section.2}{General description}{}% 2
-\BOOKMARK [2][-]{subsection.2.1}{Programming languages}{section.2}% 3
-\BOOKMARK [2][-]{subsection.2.2}{Frameworks}{section.2}% 4
-\BOOKMARK [2][-]{subsection.2.3}{Treasure Hunt}{section.2}% 5
-\BOOKMARK [1][-]{section.3}{Components}{}% 6
-\BOOKMARK [2][-]{subsection.3.1}{User identification}{section.3}% 7
+\BOOKMARK [2][-]{subsection.2.1}{Programming languages and frameworks}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Treasure Hunt}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Components}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Registration}{section.3}% 6
+\BOOKMARK [3][-]{subsubsection.3.1.1}{Homepage}{subsection.3.1}% 7
 \BOOKMARK [2][-]{subsection.3.2}{Chat}{section.3}% 8
-\BOOKMARK [2][-]{subsection.3.3}{Game creation}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.3}{Game}{section.3}% 9
 \BOOKMARK [1][-]{section.4}{User manual}{}% 10
-\BOOKMARK [2][-]{subsection.4.1}{Setup}{section.4}% 11
-\BOOKMARK [2][-]{subsection.4.2}{Limitations}{section.4}% 12
-\BOOKMARK [1][-]{section.5}{Summary}{}% 13
+\BOOKMARK [1][-]{section.5}{Limitations}{}% 11
+\BOOKMARK [1][-]{section.6}{Summary}{}% 12

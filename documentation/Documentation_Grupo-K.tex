@@ -22,7 +22,7 @@
 
 \bibliography{bibs} 
 
-\title{The Treasure Hunt}
+\title{La Caza del Tesoro}
 \author{Grupo K: \\
 	Tegshigzugder Otgonbayar \\
 	Tim Reiprich \\
@@ -65,34 +65,64 @@ In the project of the course Cloud Application Development we were to develop a 
 * deploy over a PaaS cloud
 * https://github.com/DRTorresRuiz/LaCazaDelTesoro
 
-\subsection{Programming languages}
+\subsection{Programming languages and frameworks}
+\begin{itemize}
+\item project created using the Django framwork because Python every group member knows this language and the framework is supposed to be beginner friendly
+\item python version and django version
+\item for certain tasks like the interaction with Google Maps JavaScript had to be used as there is no explicit Python API
+\item application deployed using Heroku (easy to handle, provides possibly useful add-ons)
+\end{itemize}
 
-* python
-
-\subsection{Frameworks}
 
 \subsection{Treasure Hunt}
 
 The Treasure Hunt is a competition game in which a group of participants. They must find a series of treasures scattered throughout a play area. The location of each treasure will come indicated by a clue that suggests where it is hidden. The first winner will win the game. So the main goal of the game is to locate all the treasures.
 
 \section{Components} % Apps
-
-\subsection{User identification}
-
+The Django project is split into multiple apps. Each app handles one component of the whole project. This is done to get a clear structure of the project and to simplify parallel work. Each of the following sections will explain the functionality and implementation of one specific app.
+\subsection{Registration}
+\begin{itemize}
+\item handles user login, storing of user data and logout
+\item functionality provided by django-social-auth
+\item only logout is done using the django standard logout as earlier mentioned module uses the same models
+\item uses OAuth 2.0 to enable interaction with social network APIs $\to$ we used Google+ API
+\item module redirects new user to Google+ Login homepage, stores known users in database and provides our homepage with needed information about the user
+\item API can be configured using the Google developer console 
+\item login\_required (requires user to log in to access a certain view) and user.is\_authenticated (possibility to check if user is logged in) are used in different apps of the project
+\end{itemize}
+\subsubsection{Homepage}
+\begin{itemize}
+\item contains initial view of our website
+\item shows overview of current and finished games etc.
+\item provides access to detail views of games and the possibility to log out
+\item can only be accessed if user is logged in to a Google account, otherwise user is redirected to registration app (\@login\_required before view)
+\end{itemize}
 \subsection{Chat}
-
-\subsection{Game creation}
-
+\begin{itemize}
+\item contains functionality of interaction between users in the same game
+\item add descrption how chat works and why this implementation was chosen
+\item backend uses Redis to transmit the messages
+\item locally a docker container providing a Redis server was used but couldn't be launched on Heroku
+\item Heroku provied add-on "Heroku Redis" which was used to launch a Redis instance in the cloud to enable transmitting messages without requiring a local Redis server
+\end{itemize}
+\subsection{Game}
+\begin{itemize}
+\item provides all functionality in relation to a single game: contains details, join, leave views as well as the views to create games and treasures
+\item ...
+\end{itemize}
 \section{User manual}
-
-\subsection{Setup}
-
+\begin{itemize}
+\item required setup (?)
+\item explanation of user interface
+\end{itemize}
 \newpage
 
-\subsection{Limitations}
-
-* limitations
-* difficulties encountered
+\section{Limitations}
+\begin{itemize}
+\item limitations of our project
+\item difficulties encountered
+\item possible improvements in the future
+\end{itemize}
 
 \section{Summary}
 Through this project we were able to
