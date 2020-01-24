@@ -67,8 +67,14 @@ class Treasure(models.Model):
 
     def get_found_url(self):
         return reverse_lazy('found', kwargs={'treasure_id': self.id})
-    
+
+
 class TreasureForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(TreasureForm, self).__init__(*args, **kwargs)
+        # Making img required
+        self.fields['treasure_img'].required = True
+
     class Meta:
         model = Treasure
         fields = ('name','clue','solution','address','position','treasure_img')
@@ -87,6 +93,13 @@ class Player_Treasure_Found(models.Model):
     prove_date = models.DateTimeField(default=now, editable=False)
 
 class Player_Treasure_Found_Form(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(Player_Treasure_Found_Form, self).__init__(*args, **kwargs)
+        # Making img required
+        self.fields['prove_img'].required = True
+        self.fields['position'].required = True
+
     class Meta:
         model = Player_Treasure_Found
         fields = ('prove_img','position',)
