@@ -95,3 +95,37 @@ def treasure_list(request, game_id=0):
     else:
         treasure_list = Treasure.objects.all().order_by('id')
     return render(request,'treasure/list.html', {'treasure_list':treasure_list})
+
+def play(request, game_id):
+    gameObj = Game.objects.get(pk = game_id)
+    room_name = game_id
+    form = Player_Treasure_Found_Form(request.POST, request.FILES)
+    #treasures = Treasure.objects.filter(game = gameObj)
+    # ** treasures_found = Player_Treasure_Found.objects.filter(game=gameObj, player=request.user).values('treasure__id')
+    # ** all_treasures_found = Treasure.objects.filter(pk__in=treasures_found)
+    #found_treasures_obj = Player_Treasure_Found.objects.filter(game_id = gameObj)
+    #found_treasures = found_treasures_obj.values_list('treasure_id', flat=True)
+    #context = {'game': gameObj, 'all_treasures': all_treasures, 'found_treasures_obj': found_treasures_obj, 'found_treasures': found_treasures, 'room_name': room_name, }
+    if request.method == 'POST':
+        # check whether it's valid:
+        if form.is_valid():
+            try:
+                obj = form.save(commit=False)
+                obj.player = request.user
+                obj.game = Game.objects.get(id=game_id)
+                obj.treasure = Treasure.objects.get(id=request.POST.get('treasure_id'))
+                obj = form.save()
+            except Treasure.DoesNotExist:
+                pass
+            #return HttpResponseRedirect(reverse('play', kwargs={'id': obj.id}))
+            #else:
+            #    form = GameForm()
+            #return render(request, 'play.html', {'form':form})
+    all_treasures_found = Player_Treasure_Found.objects.filter(game=gameObj, player=request.user)
+    treasures_found = Player_Treasure_Found.objects.filter(game=gameObj, player=request.user).values()
+    treasures_found_ids = [t['treasure_id'] for t in treasures_found]
+    if treasures_found_ids is not None:
+        all_treasures_available = Treasure.objects.filter(game=gameObj).exclude(pk__in=treasures_found_ids)
+    context = {'game': gameObj, 'all_treasures_found': all_treasures_found,'all_treasures_available': all_treasures_available, 'room_name': room_name, }
+    context.update({"form": form})
+    return render(request, 'play.html', context=context)

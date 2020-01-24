@@ -9,6 +9,7 @@
           <th>Clue</th>
           <th>Solution</th>
           <th>Position</th>
+           <th>Image</th>
       </tr>
     {% for treasure in treasure_list %}
       <tr>
@@ -23,6 +24,9 @@
           </td>
           <td>
             {{ treasure.position }}
+          </td>
+          <td>
+            <img src="/media/{{ treasure.treasure_img }}" width="50px" />
           </td>
       </tr>
     {% endfor %}

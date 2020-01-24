@@ -8,11 +8,15 @@ from django.contrib.auth.models import Permission, User
 #from django.forms import ModelForm
 from geoposition.fields import GeopositionField
 from django.urls import reverse_lazy
+from django.utils.timezone import now
+
+#def user_directory_path(instance, filename):
+# file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+#    return 'user_{0}/{1}'.format(instance.user.user.username, filename)
 
 def user_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
-
+    return 'games/{game}/treasure_{treasure}/user_{userid}/{filename}'.format(
+        game=instance.game.id,treasure=instance.treasure.id,userid=instance.player.id, filename=filename)
 
 class Status(IntEnum):
     Finalized = 1
@@ -81,13 +85,14 @@ class TreasureForm(forms.ModelForm):
         }
 
 class Player_Treasure_Found(models.Model):
-    game_id = models.ForeignKey(Game, on_delete=models.CASCADE)
-    treasure_id = models.ForeignKey(Treasure, on_delete=models.CASCADE)
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
-    prove_img = models.ImageField(upload_to=user_directory_path)
-    prove_date = models.DateTimeField()
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    treasure = models.ForeignKey(Treasure, on_delete=models.CASCADE)
+    player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player')
+    position = GeopositionField()
+    prove_img = models.ImageField(upload_to=user_directory_path,blank=True, null=True)
+    prove_date = models.DateTimeField(default=now, editable=False)
 
 class Player_Treasure_Found_Form(forms.ModelForm):
     class Meta:
         model = Player_Treasure_Found
-        fields = ('prove_img', )
+        fields = ('prove_img','position',)

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<style>
+      #map {
+          height: 600px;
+          width: 600px;
+          margin: 10px;
+      }
+      .list-group{
+        max-height: 300px;
+        margin-bottom: 10px;
+        overflow:scroll;
+        -webkit-overflow-scrolling: touch;
+      }
+</style>
+</head>
+<body>
+ <h1>{{ game.name }}</h1>
+<table>
+    <tr>
+        <td style="vertical-align: top">
+            <div id="map"><p>Click on the map to add marker.</p></div>
+        </td>
+        <td valign="top">
+            <div>
+                <h5>Treasures Availables</h5>
+                {% if all_treasures_available %}
+                <div class="list-group">
+                  {% for treasure_available in all_treasures_available %}
+                  <a onclick="selectTreasure(this, {{ treasure_available.id }});" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="d-flex w-100 justify-content-between">
+                      <p class="mb-1">{{ treasure_available.name }}</p>
+                    </div>
+                    <small>{{ treasure_available.clue }}</small>
+                  </a>
+                  {% endfor %}
+                </div>
+                {% else %}
+                <p>There are no treasures availables.</p>
+                {% endif %}
+
+                {% load widget_tweaks %}
+                {% block content %}
+                <form method="POST" class="post-form" enctype="multipart/form-data" novalidate>{% csrf_token %}
+                    <!-- {{ form.as_p }}-->
+                    <input name="treasure_id" id="treasure_id" type="hidden">
+                    {% for hidden_field in form.hidden_fields %}
+                        {{ hidden_field }}
+                    {% endfor %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.non_field_errors %}
+                            {{ error }}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% for field in form.visible_fields %}
+                        <div class="form-group">
+                            {{ field.label_tag }}
+
+                            {% if form.is_bound %}
+                              {% if field.errors %}
+                                {% render_field field class="form-control is-invalid" %}
+                                {% for error in field.errors %}
+                                  <div class="invalid-feedback">
+                                    {{ error }}
+                                  </div>
+                                {% endfor %}
+                              {% else %}
+                                {% render_field field class="form-control is-valid" %}
+                              {% endif %}
+                            {% else %}
+                              {% render_field field class="form-control" %}
+                            {% endif %}
+
+                            {% if field.help_text %}
+                              <small class="form-text text-muted">{{ field.help_text }}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    <button type="submit" class="save btn btn-success">Treasure Found!</button>
+                </form>
+                {% endblock %}
+
+            </div>
+            <hr/>
+            <h5>Treasures found</h5>
+          {% if all_treasures_found %}
+          <table cellpadding="10">
+              <tr>
+                  <th>Name</th>
+                  <th>Clue</th>
+                  <th>Image</th>
+              </tr>
+            {% for treasure_found in all_treasures_found %}
+              <tr>
+                  <td>
+                    {{ treasure_found.treasure.name }}
+                  </td>
+                  <td>
+                    {{ treasure_found.treasure.clue }}
+                  </td>
+                  <td>
+                    <img src="/media/{{ treasure_found.prove_img }}" width="50px" />
+                  </td>
+              </tr>
+            {% endfor %}
+          </table>
+          {% else %}
+            <p>There are no treasures.</p>
+          {% endif %}
+            <div>
+        </td>
+    </tr>
+</table>
+
+<script>
+      // In the following example, markers appear when the user clicks on the map.
+      // The markers are stored in an array.
+      // The user can then click an option to hide, show or delete the markers.
+      var map;
+      var markers = [];
+      var geocoder;
+      var infowindow;
+      function showLocation(position) {
+            var latitude = position.coords.latitude;
+            var longitude = position.coords.longitude;
+            document.getElementById("id_position_0").value = latitude;
+            document.getElementById("id_position_1").value = longitude;
+      }
+
+       function errorHandler(err) {
+           if(err.code == 1) {
+               alert("Error: Access is denied!");
+            } else if( err.code == 2) {
+               alert("Error: Position is unavailable!");
+            }
+        }
+
+       function getLocation() {
+            if(navigator.geolocation) {
+                var options = {timeout:60000};
+                 navigator.geolocation.getCurrentPosition(showLocation, errorHandler, options);
+            } else {
+                 alert("Sorry, browser does not support geolocation!");
+            }
+       }
+
+      function initMap() {
+            var default_position = { lat: {{ game.north_east_bound.latitude }} + ( ( {{ game.south_west_bound.latitude }} - {{ game.north_east_bound.latitude }}   ) / 2 ),
+                                     lng: {{ game.north_east_bound.longitude }} + ( ( {{ game.south_west_bound.longitude }} - {{ game.north_east_bound.longitude }}   ) / 2 )};
+            geocoder = new google.maps.Geocoder;
+            infowindow = new google.maps.InfoWindow;
+            getLocation();
+            map = new google.maps.Map(document.getElementById('map'), {
+              zoom: 15,
+              center: default_position,
+              mapTypeId: 'terrain'
+            });
+
+            var rectangle = new google.maps.Rectangle({
+              strokeColor: '#FF0000',
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: '#f6cdcd',
+              fillOpacity: 0.35,
+              map: map,
+              bounds: {
+                north: {{ game.north_east_bound.latitude }},
+                south: {{ game.south_west_bound.latitude }},
+                east: {{ game.north_east_bound.longitude }},
+                west: {{ game.south_west_bound.longitude }}
+              }
+            });
+
+            // This event listener will call addMarker() when the map is clicked.
+            map.addListener('click', function(event) {
+              deleteMarkers();
+              addMarker(event.latLng);
+            });
+
+            // Adds a marker at the center of the map.
+            //addMarker(default_position);
+          }
+
+          // Adds a marker to the map and push to the array.
+          function addMarker(location) {
+            var marker = new google.maps.Marker({
+              position: location,
+              map: map
+            });
+            markers.push(marker);
+            //alert(marker.getPosition());
+              var positionxy = marker.getPosition();
+              /*Comentado hasta que se quite la restriccion en google apo
+                geocodeLatLng(geocoder, map, infowindow, positionxy);
+               */
+              var positionxy_str = positionxy.toString().slice(1,-1);
+              var latlngStr = positionxy_str.split(',', 2);
+              document.getElementById("id_position_0").value = latlngStr[0];
+              document.getElementById("id_position_1").value = latlngStr[1];
+              document.getElementById("id_address").value = 'NA';
+          }
+
+          // Sets the map on all markers in the array.
+          function setMapOnAll(map) {
+            for (var i = 0; i < markers.length; i++) {
+              markers[i].setMap(map);
+            }
+          }
+
+          // Removes the markers from the map, but keeps them in the array.
+          function clearMarkers() {
+            setMapOnAll(null);
+          }
+
+          // Shows any markers currently in the array.
+          function showMarkers() {
+            setMapOnAll(map);
+          }
+
+          // Deletes all markers in the array by removing references to them.
+          function deleteMarkers() {
+            clearMarkers();
+            markers = [];
+          }
+
+          function geocodeLatLng(geocoder, map, infowindow, inputvalue) {
+              geocoder.geocode({'location': inputvalue}, function(results, status) {
+                if (status === 'OK') {
+                  if (results[0]) {
+                    document.getElementById("id_address").value = results[0].formatted_address;
+                    infowindow.setContent(results[0].formatted_address);
+                    infowindow.open(map, marker);
+                  } else {
+                    document.getElementById("id_address").value = 'NA';
+                  }
+                } else {
+                  document.getElementById("id_address").value = 'NA';
+                }
+              });
+          }
+ function selectTreasure(e, treasure) {
+    document.querySelectorAll('.list-group-item').forEach(function(el) {
+      el.id = el.classList;
+      var vclassname = el.className;
+      el.className = vclassname.replace("active","");
+    });
+    e.className=e.className+' active';
+    document.getElementById('treasure_id').value = treasure;
+}
+</script>
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?address=Placename&key=AIzaSyAHCaVnPMaUAjAtjpINPxhmHfsr5876u6k&callback=initMap">
+</script>
+</body>
