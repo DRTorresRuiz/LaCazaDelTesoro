@@ -50,6 +50,7 @@ def found(request, treasure_id):
     context = { 'form': form, 'treasure': treasure,  }
     return render(request, 'treasure/found.html', context = context)
 
+
 def create(request):
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -78,15 +79,21 @@ def treasure_create(request, id):
                 pass
             # return HttpResponseRedirect(reverse('treasure_list'))
             treasures = treasure.game.game.all()
+            form = TreasureForm()
             return render(request, 'treasure/create.html',
-                          {'form': form, 'treasure_list': treasures, 'game_id': treasure.game.id})
+                          {'form': form, 'treasure_list': treasures, 'game_id': treasure.game.id,
+                           'coord_ne': treasure.game.north_east_bound, 'coord_sw': treasure.game.south_west_bound})
         else:
             game = Game.objects.get(id=id)
-            return render(request, 'treasure/create.html', {'form': form, 'treasure_list': game.game.all(), 'game_id': id})
+            return render(request, 'treasure/create.html',
+                          {'form': form, 'treasure_list': game.game.all(), 'game_id': id,
+                           'coord_ne': game.north_east_bound, 'coord_sw': game.south_west_bound})
     else:
         game = get_object_or_404(Game, id=id)
         treasures = game.game.all()
-        return render(request, 'treasure/create.html', {'form': form, 'treasure_list': treasures, 'game_id': id})
+        return render(request, 'treasure/create.html',
+                      {'form': form, 'treasure_list': treasures, 'game_id': id,
+                       'coord_ne': game.north_east_bound, 'coord_sw': game.south_west_bound})
 
 
 def treasure_list(request, game_id=0):

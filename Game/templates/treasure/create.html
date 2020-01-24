@@ -111,13 +111,15 @@
             });
 
             // This event listener will call addMarker() when the map is clicked.
-            map.addListener('click', function(event) {
-              deleteMarkers();
-              addMarker(event.latLng);
-            });
+            //map.addListener('click', function(event) {
+            //  deleteMarkers();
+            //  addMarker(event.latLng);
+            //});
 
             // Adds a marker at the center of the map.
             //addMarker(default_position);
+
+            setRectangle(new google.maps.LatLng({{coord_ne}}), new google.maps.LatLng({{coord_sw}}));
           }
 
           // Adds a marker to the map and push to the array.
@@ -161,6 +163,31 @@
             clearMarkers();
             markers = [];
           }
+
+          // create rectangle
+          function setRectangle(coord_ne, coord_sw) {
+              var bounds = new google.maps.LatLngBounds();
+              bounds.extend(coord_ne);
+              bounds.extend(coord_sw);
+
+               // Define the rectangle and set its editable property to true.
+               rectangle = new google.maps.Rectangle({
+                 bounds: bounds,
+                 editable: false,
+                 draggable: false,
+                 fillColor: '#FCEBA2',
+                 fillOpacity: 0.2
+               });
+
+               rectangle.setMap(map);
+
+               // Add an event listener on the rectangle.
+               rectangle.addListener('click', function(event) {
+                  deleteMarkers();
+                  addMarker(event.latLng);
+                });
+           }
+
 
           function geocodeLatLng(geocoder, map, infowindow, inputvalue) {
               geocoder.geocode({'location': inputvalue}, function(results, status) {
