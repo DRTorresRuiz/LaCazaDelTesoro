@@ -1,3 +1,5 @@
+import math
+
 from django.shortcuts import render
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
@@ -103,20 +105,46 @@ def treasure_list(request, game_id=0):
         treasure_list = Treasure.objects.all().order_by('id')
     return render(request,'treasure/list.html', {'treasure_list':treasure_list})
 
+
+# distance between two coordinates (haversine) in km
+def distanceBetweenPoints(lat_1, lng_1, lat_2, lng_2):
+    # change to radians
+    lng_1, lat_1, lng_2, lat_2 = map(math.radians, [lng_1, lat_1, lng_2, lat_2])
+
+    d_lat = lat_2 - lat_1
+    d_lng = lng_2 - lng_1
+
+    temp = (
+            math.sin(d_lat / 2) ** 2
+            + math.cos(lat_1)
+            * math.cos(lat_2)
+            * math.sin(d_lng / 2) ** 2
+    )
+
+    return 6373.0 * (2 * math.atan2(math.sqrt(temp), math.sqrt(1 - temp)))
+
 def play(request, game_id):
-    gameObj = Game.objects.get(pk = game_id)
+    gameObj = Game.objects.get(pk=game_id)
     room_name = game_id
     form = Player_Treasure_Found_Form(request.POST, request.FILES)
-
+    location_error = None
     if request.method == 'POST':
         # check whether it's valid:
         if form.is_valid():
             try:
-                obj = form.save(commit=False)
-                obj.player = request.user
-                obj.game = Game.objects.get(id=game_id)
-                obj.treasure = Treasure.objects.get(id=request.POST.get('treasure_id'))
-                obj = form.save()
+                # check if coordinates are correct
+                treasure = Treasure.objects.get(id=request.POST.get('treasure_id'))
+
+                if distanceBetweenPoints(treasure.position.latitude, treasure.position.longitude,
+                                          form.cleaned_data['position'][0], form.cleaned_data['position'][1]) < 0.5:
+                    obj = form.save(commit=False)
+                    obj.player = request.user
+                    obj.game = Game.objects.get(id=game_id)
+                    obj.treasure = treasure
+                    obj = form.save()
+                else:
+                    # error message not valid position
+                    location_error = "Sorry, you were wrong"
             except Treasure.DoesNotExist:
                 pass
     all_treasures_found = Player_Treasure_Found.objects.filter(game=gameObj, player=request.user)
@@ -124,6 +152,7 @@ def play(request, game_id):
     treasures_found_ids = [t['treasure_id'] for t in treasures_found]
     if treasures_found_ids is not None:
         all_treasures_available = Treasure.objects.filter(game=gameObj).exclude(pk__in=treasures_found_ids)
-    context = {'game': gameObj, 'all_treasures_found': all_treasures_found,'all_treasures_available': all_treasures_available, 'room_name': room_name, }
+    context = {'game': gameObj, 'all_treasures_found': all_treasures_found,
+               'all_treasures_available': all_treasures_available, 'room_name': room_name, 'locationError': location_error}
     context.update({"form": form})
     return render(request, 'play.html', context=context)

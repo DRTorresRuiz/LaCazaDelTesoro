@@ -25,6 +25,14 @@
         </td>
         <td valign="top">
             <div>
+                {% if locationError %}
+                        <div class="bs-example">
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <strong>Error!</strong> {{locationError}}
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            </div>
+                        </div>
+                {% endif %}
                 <h5>Treasures Availables</h5>
                 {% if all_treasures_available %}
                 <div class="list-group">
@@ -82,6 +90,7 @@
                     {% endfor %}
 
                     <button type="submit" class="save btn btn-success">Treasure Found!</button>
+
                 </form>
                 {% endblock %}
 
@@ -112,7 +121,6 @@
           {% else %}
             <p>There are no treasures.</p>
           {% endif %}
-            <div>
         </td>
     </tr>
 </table>
@@ -144,12 +152,14 @@
             if(navigator.geolocation) {
                 var options = {timeout:60000};
                  navigator.geolocation.getCurrentPosition(showLocation, errorHandler, options);
+                 canLocalize = true;
             } else {
                  alert("Sorry, browser does not support geolocation!");
             }
        }
 
       function initMap() {
+            var canLocalize = false;
             var default_position = { lat: {{ game.north_east_bound.latitude }} + ( ( {{ game.south_west_bound.latitude }} - {{ game.north_east_bound.latitude }}   ) / 2 ),
                                      lng: {{ game.north_east_bound.longitude }} + ( ( {{ game.south_west_bound.longitude }} - {{ game.north_east_bound.longitude }}   ) / 2 )};
             geocoder = new google.maps.Geocoder;
@@ -177,10 +187,12 @@
             });
 
             // This event listener will call addMarker() when the map is clicked.
-            map.addListener('click', function(event) {
-              deleteMarkers();
-              addMarker(event.latLng);
-            });
+            if(!canLocalize) {
+                rectangle.addListener('click', function(event) {
+                  deleteMarkers();
+                  addMarker(event.latLng);
+                });
+            }
 
             // Adds a marker at the center of the map.
             //addMarker(default_position);
@@ -202,7 +214,7 @@
               var latlngStr = positionxy_str.split(',', 2);
               document.getElementById("id_position_0").value = latlngStr[0];
               document.getElementById("id_position_1").value = latlngStr[1];
-              document.getElementById("id_address").value = 'NA';
+              //document.getElementById("id_address").value = 'NA';
           }
 
           // Sets the map on all markers in the array.
@@ -228,21 +240,7 @@
             markers = [];
           }
 
-          function geocodeLatLng(geocoder, map, infowindow, inputvalue) {
-              geocoder.geocode({'location': inputvalue}, function(results, status) {
-                if (status === 'OK') {
-                  if (results[0]) {
-                    document.getElementById("id_address").value = results[0].formatted_address;
-                    infowindow.setContent(results[0].formatted_address);
-                    infowindow.open(map, marker);
-                  } else {
-                    document.getElementById("id_address").value = 'NA';
-                  }
-                } else {
-                  document.getElementById("id_address").value = 'NA';
-                }
-              });
-          }
+
  function selectTreasure(e, treasure) {
     document.querySelectorAll('.list-group-item').forEach(function(el) {
       el.id = el.classList;
