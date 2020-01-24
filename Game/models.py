@@ -5,14 +5,9 @@ from django_google_maps import fields as map_fields
 from django_enum_choices.fields import EnumChoiceField
 #from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.models import Permission, User
-#from django.forms import ModelForm
 from geoposition.fields import GeopositionField
 from django.urls import reverse_lazy
 from django.utils.timezone import now
-
-#def user_directory_path(instance, filename):
-# file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-#    return 'user_{0}/{1}'.format(instance.user.user.username, filename)
 
 def user_directory_path(instance, filename):
     return 'games/{game}/treasure_{treasure}/user_{userid}/{filename}'.format(
@@ -32,7 +27,6 @@ class Game(models.Model):
     player = models.ManyToManyField(User)
     creator = models.ForeignKey(User, on_delete=models.CASCADE,related_name='creator_game')
     registration_on = models.DateTimeField
-    address_center = GeopositionField(null=False)
     north_east_bound = GeopositionField(null=True)
     south_west_bound = GeopositionField(null=True)
     status = models.IntegerField(choices=Status.choices(), default=Status.InProgress)
@@ -56,7 +50,7 @@ class Game(models.Model):
 class GameForm(forms.ModelForm):
     class Meta:
         model = Game
-        fields = ('name','address_center','north_east_bound','south_west_bound')
+        fields = ('name','north_east_bound','south_west_bound')
 
 
 class Treasure(models.Model):
@@ -70,7 +64,7 @@ class Treasure(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def get_found_url(self):
         return reverse_lazy('found', kwargs={'treasure_id': self.id})
     
