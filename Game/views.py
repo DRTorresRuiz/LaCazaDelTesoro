@@ -160,7 +160,11 @@ def play(request, game_id):
 
     if len(all_treasures_available) < 1:
         # you win but you can be the first or not
-        win_msg = 'You win!'
+        win_msg = 'You complete the game!, check the results to see if you were the fastest'
+        # mark the first winner if not already set
+        if gameObj.winner is None:
+            gameObj.winner = request.user
+            gameObj.save()
 
     context = {'game': gameObj, 'all_treasures_found': all_treasures_found,
                 'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.treasure.name] for o in treasures_found],
