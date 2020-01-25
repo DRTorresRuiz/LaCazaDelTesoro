@@ -37,7 +37,8 @@
                 {% if all_treasures_available %}
                 <div class="list-group">
                   {% for treasure_available in all_treasures_available %}
-                  <a onclick="selectTreasure(this, {{ treasure_available.id }});" class="list-group-item list-group-item-action flex-column align-items-start">
+
+                  <a onclick="selectTreasure(this, {{ treasure_available.id }});" class="list-group-item list-group-item-action flex-column align-items-start {% if forloop.first %} active {% endif %}">
                     <div class="d-flex w-100 justify-content-between">
                       <p class="mb-1">{{ treasure_available.name }}</p>
                     </div>
@@ -131,6 +132,7 @@
       // The user can then click an option to hide, show or delete the markers.
       var map;
       var markers = [];
+      var newMarker;
       var geocoder;
       var infowindow;
       function showLocation(position) {
@@ -189,13 +191,32 @@
             // This event listener will call addMarker() when the map is clicked.
             if(!canLocalize) {
                 rectangle.addListener('click', function(event) {
-                  deleteMarkers();
+                  // deleteMarkers();
+                  // remove one marker and keep marker of treasures
+                  if (newMarker != undefined) {
+                    newMarker.setMap(null);
+                  }
                   addMarker(event.latLng);
                 });
             }
 
             // Adds a marker at the center of the map.
             //addMarker(default_position);
+            addTreasureMarkers({{treasure_points |safe}});
+          }
+
+          // Adds a marker to the map and push to the array.
+          function addTreasureMarkers(locations_list) {
+            for (const location_p of locations_list) {
+                var marker = new google.maps.Marker({
+                  position: { lat: location_p[0], lng: location_p[1] },
+                  map: map,
+                  icon: {
+                      url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                   },
+                   title: location_p[2]
+                });
+            }
           }
 
           // Adds a marker to the map and push to the array.
@@ -205,6 +226,7 @@
               map: map
             });
             markers.push(marker);
+            newMarker = marker;
             //alert(marker.getPosition());
               var positionxy = marker.getPosition();
               /*Comentado hasta que se quite la restriccion en google apo

@@ -83,19 +83,23 @@ def treasure_create(request, id):
             treasures = treasure.game.game.all()
             form = TreasureForm()
             return render(request, 'treasure/create.html',
-                          {'form': form, 'treasure_list': treasures, 'game_id': treasure.game.id,
-                           'coord_ne': treasure.game.north_east_bound, 'coord_sw': treasure.game.south_west_bound})
+                          {'form': form, 'treasure_list': treasures,
+                           'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.name] for o in treasures],
+                           'game_id': treasure.game.id, 'coord_ne': treasure.game.north_east_bound,
+                           'coord_sw': treasure.game.south_west_bound})
         else:
             game = Game.objects.get(id=id)
             return render(request, 'treasure/create.html',
-                          {'form': form, 'treasure_list': game.game.all(), 'game_id': id,
-                           'coord_ne': game.north_east_bound, 'coord_sw': game.south_west_bound})
+                          {'form': form, 'treasure_list': game.game.all(),
+                           'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.name] for o in game.game.all()],
+                           'game_id': id, 'coord_ne': game.north_east_bound, 'coord_sw': game.south_west_bound})
     else:
         game = get_object_or_404(Game, id=id)
         treasures = game.game.all()
         return render(request, 'treasure/create.html',
-                      {'form': form, 'treasure_list': treasures, 'game_id': id,
-                       'coord_ne': game.north_east_bound, 'coord_sw': game.south_west_bound})
+                      {'form': form, 'treasure_list': treasures,
+                       'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.name] for o in treasures],
+                       'game_id': id, 'coord_ne': game.north_east_bound, 'coord_sw': game.south_west_bound})
 
 
 def treasure_list(request, game_id=0):
@@ -148,11 +152,12 @@ def play(request, game_id):
             except Treasure.DoesNotExist:
                 pass
     all_treasures_found = Player_Treasure_Found.objects.filter(game=gameObj, player=request.user)
-    treasures_found = Player_Treasure_Found.objects.filter(game=gameObj, player=request.user).values()
-    treasures_found_ids = [t['treasure_id'] for t in treasures_found]
+    treasures_found = Player_Treasure_Found.objects.filter(game=gameObj, player=request.user)
+    treasures_found_ids = [t.treasure.id for t in treasures_found]
     if treasures_found_ids is not None:
         all_treasures_available = Treasure.objects.filter(game=gameObj).exclude(pk__in=treasures_found_ids)
     context = {'game': gameObj, 'all_treasures_found': all_treasures_found,
+               'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.treasure.name] for o in treasures_found],
                'all_treasures_available': all_treasures_available, 'room_name': room_name, 'locationError': location_error}
     context.update({"form": form})
     return render(request, 'play.html', context=context)
