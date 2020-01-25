@@ -52,7 +52,7 @@
                     <div class="list-group">
                       {% for treasure_available in all_treasures_available %}
 
-                      <a onclick="selectTreasure(this, {{ treasure_available.id }});" class="list-group-item list-group-item-action flex-column align-items-start {% if forloop.first %} active {% endif %}">
+                      <a onclick="selectTreasure(this, {{ treasure_available.id }});" class="list-group-item list-group-item-action flex-column align-items-start">
                         <div class="d-flex w-100 justify-content-between">
                           <p class="mb-1">{{ treasure_available.name }}</p>
                         </div>

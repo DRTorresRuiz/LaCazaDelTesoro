@@ -36,10 +36,12 @@
 {% else %}
  <td>{{game.winner}}</td> 
 {% endif %}
-{% if user in game.player.all %}
+{% if user in game.player.all and game.status == 2 %}
  <td><a href="{{ game.get_leave_url }}">Leave</a></td>
-{% else %}
+{% elif game.status == 2 %}
  <td><a href="{{ game.get_join_url }}">Join</a></td>
+{% else %}
+ <td></td>
 {% endif %}
 {% if user in game.player.all and game.status == 2 %}
  <td><a href="/Game/play/{{ game.id }}/"><i class="fa fa-play-circle-o" style="font-size:36px;"></i></a></td>

@@ -127,6 +127,7 @@ def distanceBetweenPoints(lat_1, lng_1, lat_2, lng_2):
 
     return 6373.0 * (2 * math.atan2(math.sqrt(temp), math.sqrt(1 - temp)))
 
+
 def play(request, game_id):
     gameObj = Game.objects.get(pk=game_id)
     room_name = game_id
@@ -161,7 +162,9 @@ def play(request, game_id):
     if treasures_found_ids is not None:
         all_treasures_available = Treasure.objects.filter(game=gameObj).exclude(pk__in=treasures_found_ids)
 
-    if len(all_treasures_available) < 1 and gameObj.winner is None:
+    if not gameObj.player.filter(pk=request.user.id).exists():
+        end_msg = 'You aren`t join in this game'
+    elif len(all_treasures_available) < 1 and gameObj.winner is None:
         # you win but you can be the first or not
         win_msg = 'You win the game!'
         gameObj.winner = request.user
