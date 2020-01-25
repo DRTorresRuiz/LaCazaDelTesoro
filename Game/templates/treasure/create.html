@@ -97,6 +97,7 @@
       // The user can then click an option to hide, show or delete the markers.
       var map;
       var markers = [];
+      var newMarker;
       var geocoder;
       var infowindow;
       function initMap() {
@@ -110,16 +111,22 @@
               mapTypeId: 'terrain'
             });
 
-            // This event listener will call addMarker() when the map is clicked.
-            //map.addListener('click', function(event) {
-            //  deleteMarkers();
-            //  addMarker(event.latLng);
-            //});
-
-            // Adds a marker at the center of the map.
-            //addMarker(default_position);
-
             setRectangle(new google.maps.LatLng({{coord_ne}}), new google.maps.LatLng({{coord_sw}}));
+            addTreasureMarkers({{treasure_points |safe}});
+          }
+
+          // Adds a marker to the map and push to the array.
+          function addTreasureMarkers(locations_list) {
+            for (const location_p of locations_list) {
+                var marker = new google.maps.Marker({
+                  position: { lat: location_p[0], lng: location_p[1] },
+                  map: map,
+                  icon: {
+                      url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                   },
+                   title: location_p[2]
+                });
+            }
           }
 
           // Adds a marker to the map and push to the array.
@@ -129,6 +136,7 @@
               map: map
             });
             markers.push(marker);
+            newMarker = marker;
             //alert(marker.getPosition());
               var positionxy = marker.getPosition();
               /*Comentado hasta que se quite la restriccion en google apo
@@ -183,7 +191,11 @@
 
                // Add an event listener on the rectangle.
                rectangle.addListener('click', function(event) {
-                  deleteMarkers();
+                  // deleteMarkers();
+                  // remove one marker and keep marker of treasures
+                  if (newMarker != undefined) {
+                    newMarker.setMap(null);
+                  }
                   addMarker(event.latLng);
                 });
            }
