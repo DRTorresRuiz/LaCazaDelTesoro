@@ -7,7 +7,7 @@ from django.urls import reverse
 from django.http import HttpResponse
 from datetime import datetime
 
-from .models import GameForm, Game
+from .models import GameForm, Game, Status
 from .models import TreasureForm
 from .models import Treasure
 from .models import Player_Treasure_Found, Player_Treasure_Found_Form
@@ -164,6 +164,7 @@ def play(request, game_id):
         # mark the first winner if not already set
         if gameObj.winner is None:
             gameObj.winner = request.user
+            gameObj.status = Status.Finalized
             gameObj.save()
 
     context = {'game': gameObj, 'all_treasures_found': all_treasures_found,
