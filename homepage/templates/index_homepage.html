@@ -27,7 +27,6 @@
         </button>
       </h5>
     </div>
-
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#panelGames">
       <div class="card-body">
             <table id="dtJoinedGames" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
@@ -43,7 +42,7 @@
               <tbody>
                 {% for game in games_joined  %}
                 <tr>
-                 <td><a href="{{ game.get_details_url }}">{{ game.name }}</a></td>
+                 <td>{{ game.name }}</td>
                 {% if game.status == 2 %}
                  <td>Active</td>
                 {% else %}
@@ -71,6 +70,49 @@
       </div>
     </div>
   </div>
+<div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-0">
+        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
+          My Games Created
+        </button>
+      </h5>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#panelGames">
+      <div class="card-body">
+            <table id="dtCreatedGames" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                    <th class="th-sm">Game</th>
+                    <th class="th-sm">Status</th>
+                    <th class="th-sm">Winner</th>
+                    <th class="th-sm">Number of Treasures</th>
+                    <th class="th-sm"></th>
+               </tr>
+              </thead>
+              <tbody>
+                {% for game in games_created  %}
+                <tr>
+                 <td>{{ game.name }}</td>
+                {% if game.status == 2 %}
+                 <td>Active</td>
+                {% else %}
+                 <td>Finished</td>
+                {% endif %}
+                {% if game.winner is None %}
+                 <td>No winner yet.</td>
+                {% else %}
+                 <td>{{game.winner}}</td>
+                {% endif %}
+                 <td>{{ game.count_treasures }}</td>
+                 <td><a href="/Game/view/{{ game.id }}/">View</a></td>
+                </tr>
+            {% endfor %}
+              </tbody>
+            </table>
+      </div>
+    </div>
+  </div>
   <div class="card">
     <div class="card-header" id="headingTwo">
       <h5 class="mb-0">
@@ -86,7 +128,7 @@
                 <tr>
                     <th class="th-sm">Game</th>
                     <th class="th-sm">Status</th>
-                    <th class="th-sm"> Winner</th>
+                    <th class="th-sm">Winner</th>
                     <th class="th-sm">Join</th>
                     <th class="th-sm">Play</th>
                </tr>
@@ -94,7 +136,7 @@
               <tbody>
                 {% for game in games  %}
                 <tr>
-                 <td><a href="{{ game.get_details_url }}">{{ game.name }}</a></td>
+                 <td>{{ game.name }}</td>
                 {% if game.status == 2 %}
                  <td>Active</td>
                 {% else %}
@@ -139,14 +181,17 @@ $(document).ready(function () {
     "paging": true,
     "pageLength": 5,
     "lengthChange": false
-    //"lengthMenu": [ 5, 10, 15, 20, 30 ]
+  });
+   $('#dtCreatedGames').DataTable({
+    "paging": true,
+    "pageLength": 5,
+    "lengthChange": false
   });
   $('.dataTables_length').addClass('bs-select');
 });
 </script>
 
 {% endblock %}
-
 
 <!-- 
 <p>To add a caption to a table, use the caption tag.</p>
