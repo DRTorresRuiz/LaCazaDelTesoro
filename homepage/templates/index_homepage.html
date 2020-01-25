@@ -21,6 +21,7 @@
 	<th>Status</th>
 	<th>Winner</th>
 	<th>Join</th>
+    <th>Play</th>
   </tr>
 {% for game in games  %}
 <tr>
@@ -40,6 +41,12 @@
 {% else %}
  <td><a href="{{ game.get_join_url }}">Join</a></td>
 {% endif %}
+{% if user in game.player.all and game.status == 2 %}
+ <td><a href="/Game/play/{{ game.id }}/"><i class="fa fa-play-circle-o" style="font-size:36px;"></i></a></td>
+{% else %}
+ <td></td>
+{% endif %}
+
 </tr>
 {% endfor %}
 </table>
