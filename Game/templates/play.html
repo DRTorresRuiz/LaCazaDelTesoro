@@ -25,76 +25,84 @@
         </td>
         <td valign="top">
             <div>
-                {% if locationError %}
+                {% if win_msg %}
                         <div class="bs-example">
-                            <div class="alert alert-danger alert-dismissible fade show">
-                                <strong>Error!</strong> {{locationError}}
-                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <div class="alert alert-success alert-dismissible fade show">
+                                <strong>Congratulations!</strong> {{win_msg}}
+                                <div><a href="/homepage/">Go to home</a></div>
                             </div>
                         </div>
-                {% endif %}
-                <h5>Treasures Availables</h5>
-                {% if all_treasures_available %}
-                <div class="list-group">
-                  {% for treasure_available in all_treasures_available %}
-
-                  <a onclick="selectTreasure(this, {{ treasure_available.id }});" class="list-group-item list-group-item-action flex-column align-items-start {% if forloop.first %} active {% endif %}">
-                    <div class="d-flex w-100 justify-content-between">
-                      <p class="mb-1">{{ treasure_available.name }}</p>
-                    </div>
-                    <small>{{ treasure_available.clue }}</small>
-                  </a>
-                  {% endfor %}
-                </div>
                 {% else %}
-                <p>There are no treasures availables.</p>
-                {% endif %}
-
-                {% load widget_tweaks %}
-                {% block content %}
-                <form method="POST" class="post-form" enctype="multipart/form-data" novalidate>{% csrf_token %}
-                    <!-- {{ form.as_p }}-->
-                    <input name="treasure_id" id="treasure_id" type="hidden">
-                    {% for hidden_field in form.hidden_fields %}
-                        {{ hidden_field }}
-                    {% endfor %}
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {% for error in form.non_field_errors %}
-                            {{ error }}
-                            {% endfor %}
-                        </div>
+                    {% if locationError %}
+                            <div class="bs-example">
+                                <div class="alert alert-danger alert-dismissible fade show">
+                                    <strong>Error!</strong> {{locationError}}
+                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                                </div>
+                            </div>
                     {% endif %}
-                    {% for field in form.visible_fields %}
-                        <div class="form-group">
-                            {{ field.label_tag }}
+                    <h5>Treasures Availables</h5>
+                    {% if all_treasures_available %}
+                    <div class="list-group">
+                      {% for treasure_available in all_treasures_available %}
 
-                            {% if form.is_bound %}
-                              {% if field.errors %}
-                                {% render_field field class="form-control is-invalid" %}
-                                {% for error in field.errors %}
-                                  <div class="invalid-feedback">
-                                    {{ error }}
-                                  </div>
-                                {% endfor %}
-                              {% else %}
-                                {% render_field field class="form-control is-valid" %}
-                              {% endif %}
-                            {% else %}
-                              {% render_field field class="form-control" %}
-                            {% endif %}
-
-                            {% if field.help_text %}
-                              <small class="form-text text-muted">{{ field.help_text }}</small>
-                            {% endif %}
+                      <a onclick="selectTreasure(this, {{ treasure_available.id }});" class="list-group-item list-group-item-action flex-column align-items-start {% if forloop.first %} active {% endif %}">
+                        <div class="d-flex w-100 justify-content-between">
+                          <p class="mb-1">{{ treasure_available.name }}</p>
                         </div>
-                    {% endfor %}
+                        <small>{{ treasure_available.clue }}</small>
+                      </a>
+                      {% endfor %}
+                    </div>
+                    {% else %}
+                    <p>There are no treasures availables.</p>
+                    {% endif %}
 
-                    <button type="submit" class="save btn btn-success">Treasure Found!</button>
+                    {% load widget_tweaks %}
+                    {% block content %}
+                    <form method="POST" class="post-form" enctype="multipart/form-data" novalidate>{% csrf_token %}
+                        <!-- {{ form.as_p }}-->
+                        <input name="treasure_id" id="treasure_id" type="hidden">
+                        {% for hidden_field in form.hidden_fields %}
+                            {{ hidden_field }}
+                        {% endfor %}
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {% for error in form.non_field_errors %}
+                                {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        {% for field in form.visible_fields %}
+                            <div class="form-group">
+                                {{ field.label_tag }}
 
-                </form>
-                {% endblock %}
+                                {% if form.is_bound %}
+                                  {% if field.errors %}
+                                    {% render_field field class="form-control is-invalid" %}
+                                    {% for error in field.errors %}
+                                      <div class="invalid-feedback">
+                                        {{ error }}
+                                      </div>
+                                    {% endfor %}
+                                  {% else %}
+                                    {% render_field field class="form-control is-valid" %}
+                                  {% endif %}
+                                {% else %}
+                                  {% render_field field class="form-control" %}
+                                {% endif %}
 
+                                {% if field.help_text %}
+                                  <small class="form-text text-muted">{{ field.help_text }}</small>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+
+                        <button type="submit" class="save btn btn-success">Treasure Found!</button>
+
+                    </form>
+                    {% endblock %}
+                {% endif %}
             </div>
             <hr/>
             <h5>Treasures found</h5>
