@@ -128,6 +128,20 @@ def distanceBetweenPoints(lat_1, lng_1, lat_2, lng_2):
     return 6373.0 * (2 * math.atan2(math.sqrt(temp), math.sqrt(1 - temp)))
 
 
+def control(request, game_id):
+    gameObj = Game.objects.get(pk=game_id)
+    if gameObj.creator is not request.user and not request.user.is_superuser:
+        return redirect('homepage:index')
+    room_name = game_id
+    context = {'game': gameObj,
+               'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.name] for o in
+                                    gameObj.game.all()],
+               'treasure_list': gameObj.game.prefetch_related('treasure').all(),
+               'coord_ne': gameObj.north_east_bound, 'coord_sw': gameObj.south_west_bound,
+               'room_name': room_name}
+    return render(request, 'control.html', context=context)
+
+
 def play(request, game_id):
     gameObj = Game.objects.get(pk=game_id)
     room_name = game_id

@@ -86,7 +86,7 @@ class TreasureForm(forms.ModelForm):
 
 class Player_Treasure_Found(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
-    treasure = models.ForeignKey(Treasure, on_delete=models.CASCADE)
+    treasure = models.ForeignKey(Treasure, on_delete=models.CASCADE, related_name='treasure')
     player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player')
     position = GeopositionField()
     prove_img = models.ImageField(upload_to=user_directory_path,blank=True, null=True)
