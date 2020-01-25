@@ -47,11 +47,13 @@ class Game(models.Model):
     def get_chat_url(self):
         return reverse_lazy('chat', kwargs={'game_id': self.id})
 
+    def count_treasures(self):
+        return Treasure.objects.filter(game=self).count()
+
 class GameForm(forms.ModelForm):
     class Meta:
         model = Game
         fields = ('name','north_east_bound','south_west_bound')
-
 
 class Treasure(models.Model):
     name = models.CharField(max_length=100)
