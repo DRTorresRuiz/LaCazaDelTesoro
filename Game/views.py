@@ -133,23 +133,26 @@ def play(request, game_id):
     form = Player_Treasure_Found_Form(request.POST, request.FILES)
     location_error = None
     win_msg = None
+    end_msg = None
     if request.method == 'POST':
         # check whether it's valid:
         if form.is_valid():
             try:
-                # check if coordinates are correct
-                treasure = Treasure.objects.get(id=request.POST.get('treasure_id'))
-
-                if distanceBetweenPoints(treasure.position.latitude, treasure.position.longitude,
-                                          form.cleaned_data['position'][0], form.cleaned_data['position'][1]) < 0.5:
-                    obj = form.save(commit=False)
-                    obj.player = request.user
-                    obj.game = Game.objects.get(id=game_id)
-                    obj.treasure = treasure
-                    obj = form.save()
+                if gameObj.status == Status.Finalized:
+                    end_msg = 'Sorry the game are finish'
                 else:
-                    # error message not valid position
-                    location_error = "Sorry, you were wrong"
+                    # check if coordinates are correct
+                    treasure = Treasure.objects.get(id=request.POST.get('treasure_id'))
+                    if distanceBetweenPoints(treasure.position.latitude, treasure.position.longitude,
+                                              form.cleaned_data['position'][0], form.cleaned_data['position'][1]) < 0.5:
+                        obj = form.save(commit=False)
+                        obj.player = request.user
+                        obj.game = Game.objects.get(id=game_id)
+                        obj.treasure = treasure
+                        obj = form.save()
+                    else:
+                        # error message not valid position
+                        location_error = "Sorry, you were wrong"
             except Treasure.DoesNotExist:
                 pass
     all_treasures_found = Player_Treasure_Found.objects.filter(game=gameObj, player=request.user)
@@ -158,17 +161,16 @@ def play(request, game_id):
     if treasures_found_ids is not None:
         all_treasures_available = Treasure.objects.filter(game=gameObj).exclude(pk__in=treasures_found_ids)
 
-    if len(all_treasures_available) < 1:
+    if len(all_treasures_available) < 1 and gameObj.winner is None:
         # you win but you can be the first or not
-        win_msg = 'You complete the game!, check the results to see if you were the fastest'
-        # mark the first winner if not already set
-        if gameObj.winner is None:
-            gameObj.winner = request.user
-            gameObj.status = Status.Finalized
-            gameObj.save()
+        win_msg = 'You win the game!'
+        gameObj.winner = request.user
+        gameObj.status = Status.Finalized
+        gameObj.save()
 
     context = {'game': gameObj, 'all_treasures_found': all_treasures_found,
-                'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.treasure.name] for o in treasures_found],
-                'all_treasures_available': all_treasures_available, 'room_name': room_name, 'locationError': location_error, 'win_msg': win_msg}
+               'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.treasure.name] for o in treasures_found],
+               'all_treasures_available': all_treasures_available, 'room_name': room_name,
+               'locationError': location_error, 'win_msg': win_msg, 'end_msg': end_msg}
     context.update({"form": form})
     return render(request, 'play.html', context=context)
