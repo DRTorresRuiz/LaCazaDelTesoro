@@ -25,7 +25,14 @@
         </td>
         <td valign="top">
             <div>
-                {% if win_msg %}
+                {% if end_msg %}
+                    <div class="bs-example">
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <strong>Time!</strong> {{end_msg}}
+                            <div><a href="/homepage/">Go to home</a></div>
+                        </div>
+                    </div>
+                {% elif win_msg %}
                         <div class="bs-example">
                             <div class="alert alert-success alert-dismissible fade show">
                                 <strong>Congratulations!</strong> {{win_msg}}
@@ -37,7 +44,6 @@
                             <div class="bs-example">
                                 <div class="alert alert-danger alert-dismissible fade show">
                                     <strong>Error!</strong> {{locationError}}
-                                    <button type="button" class="close" data-dismiss="alert">&times;</button>
                                 </div>
                             </div>
                     {% endif %}
