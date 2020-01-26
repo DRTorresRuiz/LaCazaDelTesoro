@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
@@ -57,6 +58,7 @@
                 </div>
               {% endfor %}
             </div>
+            <button type="button" id="rstBtn" class="btn btn-danger" style="margin-top:10px;" onclick="resetGame({{game.id}})">Reset game</button>
         {% endblock %}
         </td>
     </tr>
@@ -69,7 +71,8 @@
       var markers = [];
       var infowindow;
       function initMap() {
-            var default_position = { lat: 36.7090448, lng: -4.4696866 };
+            var center = {{center_game}};
+            var default_position = { lat: center[0], lng: center[1] };
             infowindow = new google.maps.InfoWindow;
 
             map = new google.maps.Map(document.getElementById('map'), {
@@ -137,7 +140,22 @@
                rectangle.setMap(map);
            }
 
+           function resetGame(gameId) {
+              var txt;
+              var r = confirm("Are you sure?");
+              if (r == true) {
+                // loader
+                var text = '<i class="fa fa-circle-o-notch fa-spin"></i> loading...';
+                $("#rstBtn").html(text);
 
+               $.ajax({
+                    url: '/Game/reset/'+gameId,
+                    success: function (data) {
+                      location.reload();
+                    }
+                  });
+              }
+            }
 
 </script>
 <script async defer

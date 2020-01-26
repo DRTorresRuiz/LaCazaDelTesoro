@@ -14,5 +14,6 @@ urlpatterns = [
     path('treasure/list', views.treasure_list, name="treasure_list"),
     url(r'treasure/list/(?P<game_id>[0-9]+)/$', views.treasure_list, name='treasure_list'),
     url('^found/(?P<treasure_id>\d+)/$', views.found, name="found"),
+    url('^reset/(?P<game_id>\d+)$', views.reset, name="reset"),
 ]
 

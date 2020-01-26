@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.urls import reverse
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from datetime import datetime
 
 from .models import GameForm, Game, Status
@@ -128,16 +128,23 @@ def distanceBetweenPoints(lat_1, lng_1, lat_2, lng_2):
     return 6373.0 * (2 * math.atan2(math.sqrt(temp), math.sqrt(1 - temp)))
 
 
+def getCenter(pointA, pointB):
+    lat = (pointA.latitude + pointB.latitude) / 2
+    lng = (pointA.longitude + pointB.longitude) / 2
+    return [float(lat), float(lng)]
+
+
 def control(request, game_id):
     gameObj = Game.objects.get(pk=game_id)
     if gameObj.creator is not request.user and not request.user.is_superuser:
         return redirect('homepage:index')
     room_name = game_id
+    center_game = getCenter(gameObj.north_east_bound, gameObj.south_west_bound)
     context = {'game': gameObj,
                'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.name] for o in
                                     gameObj.game.all()],
                'treasure_list': gameObj.game.prefetch_related('treasure').all(),
-               'coord_ne': gameObj.north_east_bound, 'coord_sw': gameObj.south_west_bound,
+               'coord_ne': gameObj.north_east_bound, 'coord_sw': gameObj.south_west_bound, 'center_game': center_game,
                'room_name': room_name}
     return render(request, 'control.html', context=context)
 
@@ -191,3 +198,15 @@ def play(request, game_id):
                'locationError': location_error, 'win_msg': win_msg, 'end_msg': end_msg}
     context.update({"form": form})
     return render(request, 'play.html', context=context)
+
+
+def reset(request, game_id):
+    gameObj = Game.objects.get(pk=game_id)
+    if gameObj.creator == request.user:
+        Player_Treasure_Found.objects.filter(game=gameObj).delete()
+        gameObj.winner = None
+        gameObj.status = Status.InProgress
+        gameObj.save()
+        return HttpResponse('ok')
+    else:
+        raise Http404
