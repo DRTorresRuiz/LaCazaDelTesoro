@@ -31,6 +31,9 @@
                     <span class="badge badge-danger">Finished</span>
                 {% endif %}
             </h3>
+            {% if user.is_superuser %}
+                <h6>Creator: {{game.creator}}</h6>
+            {% endif %}
             {% if game.status == 1 %}
                 <h6>Winner: {{game.winner}}</h6>
             {% endif %}
@@ -58,7 +61,9 @@
                 </div>
               {% endfor %}
             </div>
-            <button type="button" id="rstBtn" class="btn btn-danger" style="margin-top:10px;" onclick="resetGame({{game.id}})">Reset game</button>
+            {% if not user.is_superuser %}
+                <button type="button" id="rstBtn" class="btn btn-danger" style="margin-top:10px;" onclick="resetGame({{game.id}})">Reset game</button>
+            {% endif %}
         {% endblock %}
         </td>
     </tr>

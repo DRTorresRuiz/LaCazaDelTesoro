@@ -131,6 +131,9 @@
                     <th class="th-sm">Winner</th>
                     <th class="th-sm">Join</th>
                     <th class="th-sm">Play</th>
+                    {% if user.is_superuser %}
+                        <th class="th-sm">View</th>
+                    {% endif %}
                </tr>
               </thead>
               <tbody>
@@ -158,6 +161,9 @@
                  <td><a href="/Game/play/{{ game.id }}/"><i class="fa fa-play-circle-o" style="font-size:36px;"></i></a></td>
                 {% else %}
                  <td></td>
+                {% endif %}
+                {% if user.is_superuser %}
+                    <td><a href="/Game/control/{{ game.id }}/">View</a></td>
                 {% endif %}
                 </tr>
             {% endfor %}
