@@ -101,7 +101,8 @@
       var geocoder;
       var infowindow;
       function initMap() {
-            var default_position = { lat: 36.7090448, lng: -4.4696866 };
+            var center = {{center_game}};
+            var default_position = { lat: center[0], lng: center[1] };
             geocoder = new google.maps.Geocoder;
             infowindow = new google.maps.InfoWindow;
 
