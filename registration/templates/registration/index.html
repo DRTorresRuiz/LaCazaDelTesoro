@@ -1,8 +1,41 @@
-{% if user.is_authenticated %}
-      <p>Logged as {{ user.username }}</p>
-      <a class="btn btn-primary" href="{% url 'logout' %}">Logout</a>
-      {% else %}
+{% extends "base.html" %}
+
+{% block content %}
+  <div style="
+    text-align: center; 
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    width: 500px;
+    height: auto; 
+    padding: 20px;
+    border: 2px solid rgba(0,112,255,1);
+    border-radius: 10px;
+    margin: 100px auto;
+  ">
+    <h1 style="color: rgba(0,112,255,1)"> 
+      LA CAZA DEL TESORO
+    </h1>
+    <br>
+    {% if user.is_authenticated %}
+
+      <p> 
+        Logged as {{ user.username }}
+      </p>
+      <a class="btn btn-primary" href="{% url 'logout' %}">
+        Logout
+      </a>
+    
+    {% else %}
+
       <a class="btn btn-primary" href="{% url 'social:begin' 'google-oauth2' %}">
         Login
       </a>
+    
     {% endif %}
+    <br><br>
+    <p style="font-size: 10px;">
+        You can see our code on Github: <a style="color:rgba(0,112,255,1);" href="https://github.com/DRTorresRuiz/LaCazaDelTesoro"> La Caza del Tesoro repository</a>
+    </p>
+  </div>
+{% endblock %}
+
+

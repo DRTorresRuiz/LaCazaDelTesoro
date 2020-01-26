@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'laCazaDelTesoro',
     #'Game.apps.GameConfig',
     'leaflet',
     'djgeojson',
@@ -197,7 +196,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '732uOR7smkntZy1Xym9Cp9Fd'
 
 LOGIN_URL = '/auth/login/google-oauth2/'
 LOGOUT_URL = '/'
-LOGIN_REDIRECT_URL = '/homepage/'
+LOGIN_REDIRECT_URL = '/'
 
 GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyAHCaVnPMaUAjAtjpINPxhmHfsr5876u6k'#'AIzaSyAkd6UV2ZaaCr0g3zcts8cmlgK3vcKq6ys'
 GEOPOSITION_MAP_OPTIONS = {
