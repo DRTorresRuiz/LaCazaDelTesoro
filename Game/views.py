@@ -82,22 +82,25 @@ def treasure_create(request, id):
             # return HttpResponseRedirect(reverse('treasure_list'))
             treasures = treasure.game.game.all()
             form = TreasureForm()
+            center_game = getCenter(treasure.game.north_east_bound, treasure.game.south_west_bound)
             return render(request, 'treasure/create.html',
-                          {'form': form, 'treasure_list': treasures,
+                          {'form': form, 'treasure_list': treasures, 'center_game': center_game,
                            'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.name] for o in treasures],
                            'game_id': treasure.game.id, 'coord_ne': treasure.game.north_east_bound,
                            'coord_sw': treasure.game.south_west_bound})
         else:
             game = Game.objects.get(id=id)
+            center_game = getCenter(game.north_east_bound, game.south_west_bound)
             return render(request, 'treasure/create.html',
-                          {'form': form, 'treasure_list': game.game.all(),
+                          {'form': form, 'treasure_list': game.game.all(), 'center_game': center_game,
                            'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.name] for o in game.game.all()],
                            'game_id': id, 'coord_ne': game.north_east_bound, 'coord_sw': game.south_west_bound})
     else:
         game = get_object_or_404(Game, id=id)
+        center_game = getCenter(game.north_east_bound, game.south_west_bound)
         treasures = game.game.all()
         return render(request, 'treasure/create.html',
-                      {'form': form, 'treasure_list': treasures,
+                      {'form': form, 'treasure_list': treasures, 'center_game': center_game,
                        'treasure_points': [[float(o.position.latitude), float(o.position.longitude), o.name] for o in treasures],
                        'game_id': id, 'coord_ne': game.north_east_bound, 'coord_sw': game.south_west_bound})
 

@@ -72,11 +72,6 @@ class Treasure(models.Model):
 
 
 class TreasureForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(TreasureForm, self).__init__(*args, **kwargs)
-        # Making img required
-        self.fields['treasure_img'].required = True
-
     class Meta:
         model = Treasure
         fields = ('name','clue','solution','address','position','treasure_img')
@@ -85,6 +80,7 @@ class TreasureForm(forms.ModelForm):
             'clue': forms.Textarea(attrs={'rows': 2}),
             'solution': forms.Textarea(attrs={'rows': 2}),
         }
+
 
 class Player_Treasure_Found(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)
