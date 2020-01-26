@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 {% block content %}
   <h1>Treasure List</h1>
-  <div><a class="btn btn-primary" href={% url 'create' %}>New</a></div>
+  <div><a class="btn btn-primary" href={% url 'create' %}>New game</a>&nbsp;<a class="btn btn-primary" href={% url 'homepage:index' %}>Go home</a></div>
   {% if treasure_list %}
   <table cellpadding="10">
       <tr>
@@ -9,6 +9,7 @@
           <th>Clue</th>
           <th>Solution</th>
           <th>Position</th>
+           <th>Image</th>
       </tr>
     {% for treasure in treasure_list %}
       <tr>
@@ -23,6 +24,11 @@
           </td>
           <td>
             {{ treasure.position }}
+          </td>
+          <td>
+              {% if treasure.treasure_img != '' %}
+                <img src="/media/{{ treasure.treasure_img }}" width="50px" />
+              {% endif %}
           </td>
       </tr>
     {% endfor %}

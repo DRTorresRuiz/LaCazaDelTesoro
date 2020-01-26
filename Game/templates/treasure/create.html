@@ -97,10 +97,12 @@
       // The user can then click an option to hide, show or delete the markers.
       var map;
       var markers = [];
+      var newMarker;
       var geocoder;
       var infowindow;
       function initMap() {
-            var default_position = { lat: 36.7090448, lng: -4.4696866 };
+            var center = {{center_game}};
+            var default_position = { lat: center[0], lng: center[1] };
             geocoder = new google.maps.Geocoder;
             infowindow = new google.maps.InfoWindow;
 
@@ -110,14 +112,22 @@
               mapTypeId: 'terrain'
             });
 
-            // This event listener will call addMarker() when the map is clicked.
-            map.addListener('click', function(event) {
-              deleteMarkers();
-              addMarker(event.latLng);
-            });
+            setRectangle(new google.maps.LatLng({{coord_ne}}), new google.maps.LatLng({{coord_sw}}));
+            addTreasureMarkers({{treasure_points |safe}});
+          }
 
-            // Adds a marker at the center of the map.
-            //addMarker(default_position);
+          // Adds a marker to the map and push to the array.
+          function addTreasureMarkers(locations_list) {
+            for (const location_p of locations_list) {
+                var marker = new google.maps.Marker({
+                  position: { lat: location_p[0], lng: location_p[1] },
+                  map: map,
+                  icon: {
+                      url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+                   },
+                   title: location_p[2]
+                });
+            }
           }
 
           // Adds a marker to the map and push to the array.
@@ -127,6 +137,7 @@
               map: map
             });
             markers.push(marker);
+            newMarker = marker;
             //alert(marker.getPosition());
               var positionxy = marker.getPosition();
               /*Comentado hasta que se quite la restriccion en google apo
@@ -161,6 +172,35 @@
             clearMarkers();
             markers = [];
           }
+
+          // create rectangle
+          function setRectangle(coord_ne, coord_sw) {
+              var bounds = new google.maps.LatLngBounds();
+              bounds.extend(coord_ne);
+              bounds.extend(coord_sw);
+
+               // Define the rectangle and set its editable property to true.
+               rectangle = new google.maps.Rectangle({
+                 bounds: bounds,
+                 editable: false,
+                 draggable: false,
+                 fillColor: '#FCEBA2',
+                 fillOpacity: 0.2
+               });
+
+               rectangle.setMap(map);
+
+               // Add an event listener on the rectangle.
+               rectangle.addListener('click', function(event) {
+                  // deleteMarkers();
+                  // remove one marker and keep marker of treasures
+                  if (newMarker != undefined) {
+                    newMarker.setMap(null);
+                  }
+                  addMarker(event.latLng);
+                });
+           }
+
 
           function geocodeLatLng(geocoder, map, infowindow, inputvalue) {
               geocoder.geocode({'location': inputvalue}, function(results, status) {

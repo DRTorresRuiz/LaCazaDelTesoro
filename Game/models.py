@@ -5,14 +5,13 @@ from django_google_maps import fields as map_fields
 from django_enum_choices.fields import EnumChoiceField
 #from django.contrib.auth.signals import user_logged_in
 from django.contrib.auth.models import Permission, User
-#from django.forms import ModelForm
 from geoposition.fields import GeopositionField
 from django.urls import reverse_lazy
+from django.utils.timezone import now
 
 def user_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
-
+    return 'games/{game}/treasure_{treasure}/user_{userid}/{filename}'.format(
+        game=instance.game.id,treasure=instance.treasure.id,userid=instance.player.id, filename=filename)
 
 class Status(IntEnum):
     Finalized = 1
@@ -28,7 +27,6 @@ class Game(models.Model):
     player = models.ManyToManyField(User)
     creator = models.ForeignKey(User, on_delete=models.CASCADE,related_name='creator_game')
     registration_on = models.DateTimeField
-    address_center = GeopositionField(null=False)
     north_east_bound = GeopositionField(null=True)
     south_west_bound = GeopositionField(null=True)
     status = models.IntegerField(choices=Status.choices(), default=Status.InProgress)
@@ -49,11 +47,13 @@ class Game(models.Model):
     def get_chat_url(self):
         return reverse_lazy('chat', kwargs={'game_id': self.id})
 
+    def count_treasures(self):
+        return Treasure.objects.filter(game=self).count()
+
 class GameForm(forms.ModelForm):
     class Meta:
         model = Game
-        fields = ('name','address_center','north_east_bound','south_west_bound')
-
+        fields = ('name','north_east_bound','south_west_bound')
 
 class Treasure(models.Model):
     name = models.CharField(max_length=100)
@@ -66,10 +66,11 @@ class Treasure(models.Model):
 
     def __str__(self):
         return self.name
-    
+
     def get_found_url(self):
         return reverse_lazy('found', kwargs={'treasure_id': self.id})
-    
+
+
 class TreasureForm(forms.ModelForm):
     class Meta:
         model = Treasure
@@ -80,14 +81,23 @@ class TreasureForm(forms.ModelForm):
             'solution': forms.Textarea(attrs={'rows': 2}),
         }
 
+
 class Player_Treasure_Found(models.Model):
-    game_id = models.ForeignKey(Game, on_delete=models.CASCADE)
-    treasure_id = models.ForeignKey(Treasure, on_delete=models.CASCADE)
-    player = models.ForeignKey(User, on_delete=models.CASCADE)
-    prove_img = models.ImageField(upload_to=user_directory_path)
-    prove_date = models.DateTimeField()
+    game = models.ForeignKey(Game, on_delete=models.CASCADE)
+    treasure = models.ForeignKey(Treasure, on_delete=models.CASCADE, related_name='treasure')
+    player = models.ForeignKey(User, on_delete=models.CASCADE, related_name='player')
+    position = GeopositionField()
+    prove_img = models.ImageField(upload_to=user_directory_path,blank=True, null=True)
+    prove_date = models.DateTimeField(default=now, editable=False)
 
 class Player_Treasure_Found_Form(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(Player_Treasure_Found_Form, self).__init__(*args, **kwargs)
+        # Making img required
+        self.fields['prove_img'].required = True
+        self.fields['position'].required = True
+
     class Meta:
         model = Player_Treasure_Found
-        fields = ('prove_img', )
+        fields = ('prove_img','position',)
