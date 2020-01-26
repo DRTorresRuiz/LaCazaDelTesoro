@@ -139,7 +139,7 @@ def getCenter(pointA, pointB):
 
 def control(request, game_id):
     gameObj = Game.objects.get(pk=game_id)
-    if gameObj.creator is not request.user and not request.user.is_superuser:
+    if gameObj.creator != request.user and not request.user.is_superuser:
         return redirect('homepage:index')
     room_name = game_id
     center_game = getCenter(gameObj.north_east_bound, gameObj.south_west_bound)
