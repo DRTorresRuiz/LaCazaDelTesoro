@@ -15,7 +15,7 @@
 \usepackage{booktabs}
 \usepackage{color,soul}
 \usepackage[table,xcdraw]{xcolor}
-
+\usepackage{float}
 
 %\usepackage{fontspec}
 \graphicspath{{images/}{../images/}}
@@ -62,15 +62,18 @@ In the project of the course Cloud Application Development we were to develop a 
 
 \section{General description}
 
-* deploy over a PaaS cloud
+* deploy over a PaaS cloud \newline
 * https://github.com/DRTorresRuiz/LaCazaDelTesoro
 
 \subsection{Programming languages and frameworks}
 \begin{itemize}
 \item project created using the Django framwork because Python every group member knows this language and the framework is supposed to be beginner friendly
-\item python version and django version
+\item Python 3.7 and Django 2.2.8
 \item for certain tasks like the interaction with Google Maps JavaScript had to be used as there is no explicit Python API
 \item application deployed using Heroku (easy to handle, provides possibly useful add-ons)
+\item Bootstrap 4.1 and Jquery 3.4.1
+\item Djongo 1.2.36 to join MongoDB and Django framework
+\item Django-geoposition to manage coordinates
 \end{itemize}
 
 
@@ -107,9 +110,54 @@ The Django project is split into multiple apps. Each app handles one component o
 \end{itemize}
 \subsection{Game}
 \begin{itemize}
-\item provides all functionality in relation to a single game: contains details, join, leave views as well as the views to create games and treasures
-\item ...
+\item provides all functionality in relation to a single game
+\item the functionality developed in this section can be divided into the following:
+\begin{itemize}
+	\item game relationship
+	\item game creation
+	\item game supervision
+	\item game play
+	\item administration
 \end{itemize}
+\end{itemize}
+\subsubsection{Game relationship}
+\begin{itemize}
+	\item provides access to aplication games
+	\item allow to register in a game a play 
+	\item there are three lists with games: in which the user is registered, all games and games created by the user
+\end{itemize}
+\subsubsection{Game creation}
+\begin{itemize}
+	\item all users can create games with treasures
+	\item the game is created indicating the name and the play area
+	\item to create a treasure the user must set a name, clue, solution coordinates and an optional image
+\end{itemize}	
+\subsubsection{Game supervision}
+\begin{itemize}
+	\item only the creator of game or administrator can see the information about the game status
+	\item show treasures coordinates with markers in a map, the game status and users who have found each of the treasures
+	\item the creator can reset a game, deleted all treasure findings data recorded.
+\end{itemize}
+\subsubsection{Game play}
+\begin{itemize}
+	\item the registered user can access to play game if the game are not finished
+	\item the user coordinates are retrieved from the browser and in case it is not possible the user would be allowed to select the coordinates by selecting on the map
+	\item the user must upload a image to prove it
+	\item when a user finds all the treasures, the game ends and other users cannot find more treasures
+\end{itemize}
+\subsubsection{administration}
+\begin{itemize}
+	\item administrator users can see the status of all games
+\end{itemize}
+\section{Database}
+Below is the diagram of the database used in the application:
+\begin{figure}[H]
+	\includegraphics[width=\linewidth]{img/database.PNG}
+	\caption{Database.}
+	\label{fig:database1}
+\end{figure}
+  
+We use user entity provided by Django framework and others entities that are not shown as they are typical of the framework
 \section{User manual}
 \begin{itemize}
 \item required setup (?)
