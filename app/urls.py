@@ -19,16 +19,20 @@ from django.urls import path, include
 # mysite/urls.py
 from django.conf.urls import include
 
+# Import your views
+import laCazaDelTesoro.views as ctViews
+
 admin.autodiscover()
 
 # Add patterns to access to your views
 urlpatterns = [
+    path('', ctViews.index, name="index"),
     #path('game/', include('Game.urls', namespace="game"), name="game"),
     #path('Game/', include('Game.urls', namespace="Game"), name="Game"),
-    path('', include('homepage.urls')),
-    path('chat/', include('chat.urls')),
+		path('chat/', include('chat.urls')),
     path('admin/', admin.site.urls),
     path('registration/', include('registration.urls')),
+    path('homepage/', include('homepage.urls')),
     #path('game/', include('game.urls')),
     path('Game/', include('Game.urls')),
     # for chat
