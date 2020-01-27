@@ -25,13 +25,13 @@ admin.autodiscover()
 urlpatterns = [
     #path('game/', include('Game.urls', namespace="game"), name="game"),
     #path('Game/', include('Game.urls', namespace="Game"), name="Game"),
-    path('', include('homepage.urls')),
-    path('chat/', include('chat.urls')),
+	path('', include('homepage.urls')),
     path('admin/', admin.site.urls),
     path('registration/', include('registration.urls')),
     #path('game/', include('game.urls')),
     path('Game/', include('Game.urls')),
     # for chat
+    path('chat/', include('chat.urls')),
 ]
 
 '''
