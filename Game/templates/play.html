@@ -288,7 +288,7 @@
         }
          // set default option
          {% if all_treasures_available.count > 0 %}
-            document.getElementById('treasure_id').value = {{all_treasures_available.0}};
+            document.getElementById('treasure_id').value = {{all_treasures_available.0.id}};
          {% endif %}
 </script>
 <script async defer
