@@ -36,17 +36,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'laCazaDelTesoro',
-    #'Game.apps.GameConfig',
-    'leaflet',
-    'djgeojson',
     'social_django', #login with Google, facebook etc.
     'registration',
     'homepage',
-    'Game',
-    'geoposition',
-    'widget_tweaks',
-    'channels', #chat
-    'chat', #chat
 ]
 
 MIDDLEWARE = [ 
@@ -72,9 +64,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            os.path.join(BASE_DIR, 'templates'),
-        ],
+        'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -96,7 +86,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         'AUTH_MECHANISM': 'SCRAM-SHA-1',
-        'HOST': config('MONGO_URI', default='localhost'),
+        'HOST': config('MONGO_URI', default='localhost')
     }
 }
 
@@ -132,25 +122,10 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
-LEAFLET_CONFIG = {
-    # conf here
-    # 'SPATIAL_EXTENT': (37.0, -4.80, 36,  -3.5),
-    'DEFAULT_CENTER': (36.7163185,-4.4789157),
-    'DEFAULT_ZOOM': 16,
-    'MIN_ZOOM': 5,
-    'MAX_ZOOM': 18,
-    'ATTRIBUTION_PREFIX': 'Powered by django-leaflet',
-    'SCALE': 'both',
-    'RESET_VIEW': False
-}
 
 ### Settings specific for python-solical-auth
 AUTHENTICATION_BACKENDS = (
@@ -197,36 +172,4 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '732uOR7smkntZy1Xym9Cp9Fd'
 
 LOGIN_URL = '/auth/login/google-oauth2/'
 LOGOUT_URL = '/'
-LOGIN_REDIRECT_URL = '/homepage/'
-
-GEOPOSITION_GOOGLE_MAPS_API_KEY = 'AIzaSyAHCaVnPMaUAjAtjpINPxhmHfsr5876u6k'#'AIzaSyAkd6UV2ZaaCr0g3zcts8cmlgK3vcKq6ys'
-GEOPOSITION_MAP_OPTIONS = {
-    'minZoom': 3,
-    'maxZoom': 15,
-}
-
-GEOPOSITION_MARKER_OPTIONS = {
-    'cursor': 'move'
-}
-
-# for chat_app
-ASGI_APPLICATION = "app.routing.application"
-
-# Channels
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            "hosts": [
-                 "redis://h:p5144ec7a5bd976820a4a6eaa179115ab1d5ad9b9aca2b74a0a2afe0db82adf6a@ec2-3-216-81-30.compute-1.amazonaws.com:26689"
-             ],
-        },
-    },
-}
-
-CACHES = {
-    "default": {
-        "BACKEND": "redis_cache.RedisCache",
-        "LOCATION": os.environ.get('REDIS_URL'),
-    }
-}
+LOGIN_REDIRECT_URL = '/'
