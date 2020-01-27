@@ -149,7 +149,7 @@
     var roomName = "{{ room_name|escapejs }}";
 
     var chatSocket = new WebSocket(
-        'https://' + window.location.host +
+        'wss://' + window.location.host +
         '/ws/chat/' + roomName + '/');
 
     chatSocket.onmessage = function(e) {
