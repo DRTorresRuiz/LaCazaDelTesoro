@@ -74,7 +74,7 @@ class Treasure(models.Model):
 class TreasureForm(forms.ModelForm):
     class Meta:
         model = Treasure
-        fields = ('name','clue','solution','address','position','treasure_img')
+        fields = ('name','clue','solution','position','treasure_img')
         #widgets = {'position': forms.HiddenInput()}
         widgets = {
             'clue': forms.Textarea(attrs={'rows': 2}),
