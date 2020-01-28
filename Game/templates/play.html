@@ -9,10 +9,20 @@
           margin: 10px;
       }
       .list-group{
+        display: initial;
         max-height: 300px;
         margin-bottom: 10px;
         overflow:scroll;
         -webkit-overflow-scrolling: touch;
+      }
+      .thumbnail:hover {
+          absolute:relative;
+          top:-25px;
+          right:-35px;
+          width:500px;
+          height:auto;
+          display:block;
+          z-index:999;
       }
 </style>
 </head>
@@ -57,6 +67,10 @@
                           <p class="mb-1">{{ treasure_available.name }}</p>
                         </div>
                         <small>{{ treasure_available.clue }}</small>
+                          {% if treasure_available.treasure_img != '' %}
+                            <br>
+                            <img src="/media/{{ treasure_available.treasure_img }}" width="50px" class="thumbnail"/>
+                          {% endif %}
                       </a>
                       {% endfor %}
                     </div>

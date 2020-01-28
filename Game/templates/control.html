@@ -12,6 +12,15 @@
           width: 600px;
           margin: 10px;
       }
+      .thumbnail:hover {
+          absolute:relative;
+          top:-25px;
+          right:-35px;
+          width:500px;
+          height:auto;
+          display:block;
+          z-index:999;
+      }
 </style>
 </head>
 <body>
@@ -44,6 +53,9 @@
                       <h2 class="mb-0">
                         <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse{{ forloop.counter }}" aria-expanded="true" aria-controls="collapse{{ forloop.counter }}">
                           {{treasure_found.name}}&nbsp;&nbsp;<span class="badge badge-primary badge-pill">{{treasure_found.treasure.count}} players</span>
+                            {% if treasure_found.treasure_img != '' %}
+                                <img src="/media/{{ treasure_found.treasure_img }}" width="50px" />
+                            {% endif %}
                         </button>
                       </h2>
                     </div>
@@ -53,7 +65,11 @@
                       <ul class="list-group">
                           <b>Payers</b>
                           {% for found in treasure_found.treasure.all %}
-                            <li class="list-group-item">{{found.player}}</li>
+                            <li class="list-group-item">
+                                {{found.player}}
+                                <br>
+                                <img src="/media/{{ found.prove_img }}" width="50px" class="thumbnail"/>
+                            </li>
                           {% endfor %}
                       </ul>
                   </div>
