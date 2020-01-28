@@ -66,12 +66,12 @@
             {% endif %}
           </div>
           {% endfor %}
-        
+          
           {% if treasure_list.count > 0 %}
             <a href="{% url 'treasure_list' game_id=game_id %}">
               <button type="button" class="save btn btn-secondary">Finish</button></a>
           {% endif %}
-          <button type="submit" class="save btn btn-success">Save Treasure</button>
+          <button type="submit"  id="btn-save" class="save btn btn-success" disabled>Save Treasure</button>
         </form>
       </td>
       <td style="width: 24px"></td>
@@ -118,6 +118,7 @@
     var geocoder;
     var infowindow;
     function initMap() {
+      $('#id_position_0').parent().hide()
       var center = {{ center_game }};
       var default_position = { lat: center[0], lng: center[1] };
       geocoder = new google.maps.Geocoder;
@@ -164,8 +165,8 @@
       var latlngStr = positionxy_str.split(',', 2);
       document.getElementById("id_position_0").value = latlngStr[0];
       document.getElementById("id_position_1").value = latlngStr[1];
-      document.getElementById("id_address").value = 'NA';
-    }
+      document.getElementById("btn-save").disabled = false;
+      }
 
     // Sets the map on all markers in the array.
     function setMapOnAll(map) {
@@ -234,6 +235,8 @@
         }
       });
     }
+
+
   </script>
 
   <script async defer
