@@ -25,8 +25,8 @@
   {% endblock %}
 
   <div style="margin-bottom: 10px; width: 250px; float: left;min-height: 225px" 
-       class="border border-primary rounded shadow p-3 bg-white">
-    <h3 class="text-primary">Current Games</h3>
+       class="border border-secondary rounded shadow p-3 bg-white">
+    <h3>Current Games</h3>
     <p>The Game has the following record counts:</p>
     <ul>
       <li><strong>Games active:</strong> {{ num_games_active }}</li>
@@ -40,8 +40,8 @@
        class="btn btn-outline-primary btn-lg"
        href="{% url 'create' %}">+ Create New Game</a>
     <div class="accordion" id="panelGames">
-        <div class="card border-primary">
-            <div class="card-header bg-primary" id="headingTwo">
+        <div class="card border-secondary">
+            <div class="card-header bg-secondary" id="headingTwo">
               <h5 class="mb-0">
                 <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
                   All Games
@@ -90,7 +90,7 @@
                          <td></td>
                         {% endif %}
                         {% if user.is_superuser %}
-                            <td><a href="/Game/control/{{ game.id }}/" class="btn btn-secondary">View</a></td>
+                            <td><a href="/Game/control/{{ game.id }}/" class="btn btn-info">View</a></td>
                         {% endif %}
                         </tr>
                     {% endfor %}
@@ -99,8 +99,8 @@
               </div>
             </div>
           </div>  
-          <div class="card border-primary">
-            <div class="card-header bg-primary" id="headingOne">
+          <div class="card border-secondary">
+            <div class="card-header bg-secondary" id="headingOne">
               <h5 class="mb-0">
                 <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
                   My Games Joined
@@ -150,8 +150,8 @@
               </div>
             </div>
           </div>
-      <div class="card border-primary">
-        <div class="card-header bg-primary" id="headingThree">
+      <div class="card border-secondary">
+        <div class="card-header bg-secondary" id="headingThree">
           <h5 class="mb-0">
             <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
               My Games Created
@@ -185,7 +185,7 @@
                      <td>{{game.winner}}</td>
                     {% endif %}
                      <td>{{ game.count_treasures }}</td>
-                     <td><a href="/Game/control/{{ game.id }}/" class="btn btn-secondary">View</a></td>
+                     <td><a href="/Game/control/{{ game.id }}/" class="btn btn-info">View</a></td>
                     </tr>
                 {% endfor %}
                   </tbody>
@@ -215,7 +215,7 @@ $(document).ready(function () {
 
 
   <div style="margin-bottom: 10px; width: 250px; float: left; min-height: 225px" 
-       class="border border-primary rounded shadow p-3 bg-white">
+       class="border border-secondary rounded shadow p-3 bg-white">
     <a class="twitter-timeline"
         href="https://twitter.com/CazaLa"
         data-chrome="nofooter noborders"
