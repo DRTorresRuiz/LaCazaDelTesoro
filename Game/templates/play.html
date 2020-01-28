@@ -205,11 +205,27 @@
       var newMarker;
       var geocoder;
       var infowindow;
+      var positionMarker;
       function showLocation(position) {
             var latitude = position.coords.latitude;
             var longitude = position.coords.longitude;
             document.getElementById("id_position_0").value = latitude;
             document.getElementById("id_position_1").value = longitude;
+            setMarkerPosition(latitude, longitude);
+      }
+
+      function setMarkerPosition(latitude, longitude) {
+        if (positionMarker != undefined) {
+           positionMarker.setMap(null);
+        }
+        positionMarker = new google.maps.Marker({
+                  position: { lat: latitude, lng: longitude },
+                  map: map,
+                  icon: {
+                      url: "http://maps.google.com/mapfiles/ms/icons/green-dot.png"
+                   },
+                   title: "You are here"
+                });
       }
 
        function errorHandler(err) {
@@ -223,7 +239,7 @@
        function getLocation() {
             if(navigator.geolocation) {
                 var options = {timeout:60000};
-                 navigator.geolocation.getCurrentPosition(showLocation, errorHandler, options);
+                 navigator.geolocation.watchPosition(showLocation, errorHandler, options);
                  canLocalize = true;
             } else {
                  alert("Sorry, browser does not support geolocation!");
