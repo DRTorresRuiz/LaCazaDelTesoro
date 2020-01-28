@@ -6,7 +6,7 @@
     var roomName = "{{ room_name|escapejs }}";
 
     var chatSocket = new WebSocket(
-        'wss://' + window.location.host +
+        'ws://' + window.location.host +
         '/ws/chat/' + roomName + '/');
 
     chatSocket.onmessage = function(e) {

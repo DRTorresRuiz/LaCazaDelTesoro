@@ -1,21 +1,32 @@
 {% extends "base.html" %}
 
 {% block navigation %}
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="position: fixed; width: 100%">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow" style="position: fixed; width: 100%">
     {% include "nav.html" %}
   </nav>
 {% endblock %}
 
 {% block content %}
+  
+  <div style="position: fixed; z-index: 100; right: 10px; top: 70px;"
+      onclick="info()">
+    <i class="fa fa-question-circle btn btn-info" style="font-size: 40px;"></i>
+  </div>
+  {% block info_button %}
+  {% endblock%}
+
   <div class="container-fluid" 
        style="padding: 0px; 
               width: 1024px;
               margin-top: 100px;
-              margin-bottom: 10px;
+              margin-bottom: 100px;
               position: absolute;
               z-index: -1">
     {% block content_page %}
     {% endblock %}
   </div>
+  <footer style="position:fixed; bottom: 0; left: 0; width: 100%; padding: 10px;" 
+          class="bg-dark text-white text-right shadow">
+    Welcome to the project of the <a href="https://www.uma.es/" class="text-primary">Malaga University</a> Cloud Development Subject.
+  </footer>
 {% endblock %}
-   

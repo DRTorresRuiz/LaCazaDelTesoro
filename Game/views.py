@@ -105,12 +105,12 @@ def treasure_create(request, id):
                        'game_id': id, 'coord_ne': game.north_east_bound, 'coord_sw': game.south_west_bound})
 
 
-# def treasure_list(request, game_id=0):
-#     if game_id != 0:
-#         treasure_list = Treasure.objects.filter(game=game_id).order_by('id')
-#     else:
-#         treasure_list = Treasure.objects.all().order_by('id')
-#     return render(request,'treasure/list.html', {'treasure_list':treasure_list})
+def treasure_list(request, game_id=0):
+    if game_id != 0:
+        treasure_list = Treasure.objects.filter(game=game_id).order_by('id')
+    else:
+        treasure_list = Treasure.objects.all().order_by('id')
+    return render(request,'treasure/list.html', {'treasure_list':treasure_list})
 
 
 # distance between two coordinates (haversine) in km
