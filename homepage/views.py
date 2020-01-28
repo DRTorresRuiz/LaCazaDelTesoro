@@ -8,7 +8,7 @@ from Game.models import Treasure
 @login_required(login_url='/registration/')
 def index(request):
 
-    games = Game.objects.all()
+    games = Game.objects.all().exclude(creator=request.user)
     num_games_finished = len(Game.objects.filter(status = 1))
     num_games_active = len(Game.objects.filter(status = 2))
     num_winners = len(set(filter(None.__ne__, Game.objects.all().values_list('winner', flat=True))))
