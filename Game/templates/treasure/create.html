@@ -66,12 +66,12 @@
             {% endif %}
           </div>
           {% endfor %}
-          <button type="submit" class="save btn btn-success">Save</button>
-
+        
           {% if treasure_list.count > 0 %}
             <a href="{% url 'treasure_list' game_id=game_id %}">
-              <button type="button" class="save btn btn-success">Finish</button></a>
+              <button type="button" class="save btn btn-secondary">Finish</button></a>
           {% endif %}
+          <button type="submit" class="save btn btn-success">Save Treasure</button>
         </form>
       </td>
       <td style="width: 24px"></td>

@@ -40,116 +40,112 @@
         class="btn btn-primary btn-lg"
         href="{% url 'create' %}">+ Create New Game</a>
       <div class="accordion" id="panelGames">
-          <div class="card border-secondary">
-              <div class="card-header bg-secondary" id="headingTwo">
-                <h5 class="mb-0">
-                  <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    All Games
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#panelGames">
-                <div class="card-body">
-                      <table id="dtAllGames" class="table" cellspacing="0" style="width: 708px">
-                        <thead>
-                          <tr>
-                              <th class="th-sm">Game</th>
-                              <th class="th-sm">Status</th>
-                              <th class="th-sm">Winner</th>
-                              <th class="th-sm">Join</th>
-                              <th class="th-sm">Play</th>
-                              {% if user.is_superuser %}
-                                  <th class="th-sm">View</th>
-                              {% endif %}
+        <div class="card border-secondary">
+            <div class="card-header bg-secondary" id="headingTwo">
+              <h5 class="mb-0">
+                <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  All Games
+                </button>
+              </h5>
+            </div>
+            <div id="collapseTwo" class="collapse show" aria-labelledby="headingTwo" data-parent="#panelGames">
+              <div class="card-body">
+                    <table id="dtAllGames" class="table" cellspacing="0" style="width: 708px">
+                      <thead>
+                        <tr>
+                            <th class="th-sm">Game</th>
+                            <th class="th-sm">Status</th>
+                            <th class="th-sm">Number of Treasures</th>
+                            <th class="th-sm">Join</th>
+                            <th class="th-sm">Play</th>
+                            {% if user.is_superuser %}
+                                <th class="th-sm">View</th>
+                            {% endif %}
+                      </tr>
+                      </thead>
+                      <tbody>
+                        {% for game in games  %}
+                        <tr>
+                        <td>{{ game.name }}</td>
+                        {% if game.status == 2 %}
+                        <td> <span class="badge badge-success">Active</span></td>
+                        {% else %}
+                        <td> <span class="badge badge-secondary">Finished</span></td>
+                        {% endif %}
+                        <td style="text-align: center">{{ game.count_treasures }}</td>
+                        {% if user in game.player.all and game.status == 2 %}
+                        <td><a href="{{ game.get_leave_url }}" class="btn btn-danger">Leave</a></td>
+                        {% elif game.status == 2 %}
+                        <td><a href="{{ game.get_join_url }}" class="btn btn-success">Join</a></td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        {% if user in game.player.all and game.status == 2 %}
+                        <td><a href="/Game/play/{{ game.id }}/" class="btn btn-success">Enter</a></td>
+                        {% else %}
+                        <td></td>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                            <td><a href="/Game/control/{{ game.id }}/" class="btn btn-info">View</a></td>
+                        {% endif %}
                         </tr>
-                        </thead>
-                        <tbody>
-                          {% for game in games  %}
-                          <tr>
-                          <td>{{ game.name }}</td>
-                          {% if game.status == 2 %}
-                          <td>Active</td>
-                          {% else %}
-                          <td>Finished</td>
-                          {% endif %}
-                          {% if game.winner is None %}
-                          <td>No winner yet.</td>
-                          {% else %}
-                          <td>{{game.winner}}</td>
-                          {% endif %}
-                          {% if user in game.player.all and game.status == 2 %}
-                          <td><a href="{{ game.get_leave_url }}" class="btn btn-danger">Leave</a></td>
-                          {% elif game.status == 2 %}
-                          <td><a href="{{ game.get_join_url }}" class="btn btn-success">Join</a></td>
-                          {% else %}
-                          <td></td>
-                          {% endif %}
-                          {% if user in game.player.all and game.status == 2 %}
-                          <td><a href="/Game/play/{{ game.id }}/" class="btn btn-success">Enter</a></td>
-                          {% else %}
-                          <td></td>
-                          {% endif %}
-                          {% if user.is_superuser %}
-                              <td><a href="/Game/control/{{ game.id }}/" class="btn btn-info">View</a></td>
-                          {% endif %}
-                          </tr>
-                      {% endfor %}
-                        </tbody>
-                      </table>
-                </div>
-              </div>
-            </div>  
-            <div class="card border-secondary">
-              <div class="card-header bg-secondary" id="headingOne">
-                <h5 class="mb-0">
-                  <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                    My Games Joined
-                  </button>
-                </h5>
-              </div>
-              <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#panelGames">
-                <div class="card-body">
-                      <table id="dtJoinedGames" class="table" cellspacing="0" width="708">
-                        <thead>
-                          <tr>
-                              <th class="th-sm">Game</th>
-                              <th class="th-sm">Status</th>
-                              <th class="th-sm">Winner</th>
-                              <th class="th-sm">Leave</th>
-                              <th class="th-sm">Play</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                          {% for game in games_joined  %}
-                          <tr>
-                          <td>{{ game.name }}</td>
-                          {% if game.status == 2 %}
-                          <td>Active</td>
-                          {% else %}
-                          <td>Finished</td>
-                          {% endif %}
-                          {% if game.winner is None %}
-                          <td>No winner yet.</td>
-                          {% else %}
-                          <td>{{game.winner}}</td>
-                          {% endif %}
-                          {% if user in game.player.all and game.status == 2 %}
-                          <td><a href="{{ game.get_leave_url }}" class="btn btn-danger">Leave</a></td>
-                          {% else %}
-                          <td></td>
-                          {% endif %}
-                          {% if user in game.player.all and game.status == 2 %}
-                          <td><a href="/Game/play/{{ game.id }}/" class="btn btn-success">Enter</a></td>
-                          {% else %}
-                          <td></td>
-                          {% endif %}
-                          </tr>
-                      {% endfor %}
-                        </tbody>
-                      </table>
-                </div>
+                    {% endfor %}
+                      </tbody>
+                    </table>
               </div>
             </div>
+        </div>  
+        <div class="card border-secondary">
+          <div class="card-header bg-secondary" id="headingOne">
+            <h5 class="mb-0">
+              <button class="btn btn-link text-white" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                My Games Joined
+              </button>
+            </h5>
+          </div>
+          <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#panelGames">
+            <div class="card-body">
+                  <table id="dtJoinedGames" class="table" cellspacing="0" width="708">
+                    <thead>
+                      <tr>
+                          <th class="th-sm">Game</th>
+                          <th class="th-sm">Status</th>
+                          <th class="th-sm">Winner</th>
+                          <th class="th-sm">Leave</th>
+                          <th class="th-sm">Play</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                      {% for game in games_joined  %}
+                      <tr>
+                      <td>{{ game.name }}</td>
+                      {% if game.status == 2 %}
+                      <td> <span class="badge badge-success">Active</span></td>
+                      {% else %}
+                      <td> <span class="badge badge-secondary">Finished</span></td>
+                      {% endif %}
+                      {% if game.winner is None %}
+                      <td>No winner yet.</td>
+                      {% else %}
+                      <td>{{game.winner}}</td>
+                      {% endif %}
+                      {% if user in game.player.all and game.status == 2 %}
+                      <td><a href="{{ game.get_leave_url }}" class="btn btn-danger">Leave</a></td>
+                      {% else %}
+                      <td></td>
+                      {% endif %}
+                      {% if user in game.player.all and game.status == 2 %}
+                      <td><a href="/Game/play/{{ game.id }}/" class="btn btn-success">Enter</a></td>
+                      {% else %}
+                      <td></td>
+                      {% endif %}
+                      </tr>
+                  {% endfor %}
+                    </tbody>
+                  </table>
+            </div>
+          </div>
+        </div>
         <div class="card border-secondary">
           <div class="card-header bg-secondary" id="headingThree">
             <h5 class="mb-0">
@@ -175,16 +171,16 @@
                       <tr>
                       <td>{{ game.name }}</td>
                       {% if game.status == 2 %}
-                      <td>Active</td>
+                      <td> <span class="badge badge-success">Active</span></td>
                       {% else %}
-                      <td>Finished</td>
+                      <td> <span class="badge badge-secondary">Finished</span></td>
                       {% endif %}
                       {% if game.winner is None %}
                       <td>No winner yet.</td>
                       {% else %}
                       <td>{{game.winner}}</td>
                       {% endif %}
-                      <td>{{ game.count_treasures }}</td>
+                      <td style="text-align: center">{{ game.count_treasures }}</td>
                       <td><a href="/Game/control/{{ game.id }}/" class="btn btn-info">View</a></td>
                       </tr>
                   {% endfor %}
