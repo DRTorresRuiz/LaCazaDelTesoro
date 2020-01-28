@@ -18,6 +18,8 @@ from django.urls import path, include
 
 # mysite/urls.py
 from django.conf.urls import include
+from django.conf.urls.static import static
+from django.conf import settings
 
 admin.autodiscover()
 
@@ -32,7 +34,7 @@ urlpatterns = [
     path('Game/', include('Game.urls')),
     # for chat
     path('chat/', include('chat.urls')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 '''
 #Add URL maps to redirect the base URL to our application
