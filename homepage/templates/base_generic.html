@@ -11,11 +11,15 @@
        style="padding: 0px; 
               width: 1024px;
               margin-top: 100px;
-              margin-bottom: 10px;
+              margin-bottom: 100px;
               position: absolute;
               z-index: -1">
     {% block content_page %}
     {% endblock %}
   </div>
+  <footer style="position:fixed; bottom: 0; left: 0; width: 100%; padding: 20px;" 
+          class="bg-dark text-white text-right">
+    Welcome to home page of the <a href="https://www.uma.es/" class="text-primary">Malaga University</a> Cloud Development Project.
+  </footer>
 {% endblock %}
    
