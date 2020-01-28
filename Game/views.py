@@ -164,7 +164,7 @@ def play(request, game_id):
         if form.is_valid():
             try:
                 if gameObj.status == Status.Finalized:
-                    end_msg = 'Sorry the game are finish'
+                    end_msg = 'Sorry, the game have finished.'
                 else:
                     # check if coordinates are correct
                     treasure = Treasure.objects.get(id=request.POST.get('treasure_id'))
@@ -187,10 +187,10 @@ def play(request, game_id):
         all_treasures_available = Treasure.objects.filter(game=gameObj).exclude(pk__in=treasures_found_ids)
 
     if not gameObj.player.filter(pk=request.user.id).exists():
-        end_msg = 'You aren`t join in this game'
+        end_msg = 'You didn\'t joined this game.'
     elif len(all_treasures_available) < 1 and gameObj.winner is None:
         # you win but you can be the first or not
-        win_msg = 'You win the game!'
+        win_msg = 'Congratulations! You win!'
         gameObj.winner = request.user
         gameObj.status = Status.Finalized
         gameObj.save()
