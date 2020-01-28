@@ -29,14 +29,14 @@
                     <div class="bs-example">
                         <div class="alert alert-danger alert-dismissible fade show">
                             <strong>Time!</strong> {{end_msg}}
-                            <div><a href="/homepage/">Go to home</a></div>
+                            <div><a href="/">Go to home</a></div>
                         </div>
                     </div>
                 {% elif win_msg %}
                         <div class="bs-example">
                             <div class="alert alert-success alert-dismissible fade show">
                                 <strong>Congratulations!</strong> {{win_msg}}
-                                <div><a href="/homepage/">Go to home</a></div>
+                                <div><a href="/">Go to home</a></div>
                             </div>
                         </div>
                 {% else %}
@@ -105,6 +105,7 @@
                         {% endfor %}
 
                         <button type="submit" class="save btn btn-success">Treasure Found!</button>
+                        <a href="/"><button type="button" class="save btn btn-warning">Go Home</button></a>
 
                     </form>
                     {% endblock %}
