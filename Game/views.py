@@ -166,18 +166,22 @@ def play(request, game_id):
                 if gameObj.status == Status.Finalized:
                     end_msg = 'Sorry, the game have finished.'
                 else:
-                    # check if coordinates are correct
-                    treasure = Treasure.objects.get(id=request.POST.get('treasure_id'))
-                    if distanceBetweenPoints(treasure.position.latitude, treasure.position.longitude,
-                                              form.cleaned_data['position'][0], form.cleaned_data['position'][1]) < 0.5:
-                        obj = form.save(commit=False)
-                        obj.player = request.user
-                        obj.game = Game.objects.get(id=game_id)
-                        obj.treasure = treasure
-                        obj = form.save()
+                    # check repeated point
+                    if Player_Treasure_Found.objects.filter(game=gameObj, player=request.user, treasure=request.POST.get('treasure_id')).exists():
+                        location_error = "Treasure already found"
                     else:
-                        # error message not valid position
-                        location_error = "Sorry, you were wrong"
+                        # check if coordinates are correct
+                        treasure = Treasure.objects.get(id=request.POST.get('treasure_id'))
+                        if distanceBetweenPoints(treasure.position.latitude, treasure.position.longitude,
+                                                  form.cleaned_data['position'][0], form.cleaned_data['position'][1]) < 0.5:
+                            obj = form.save(commit=False)
+                            obj.player = request.user
+                            obj.game = Game.objects.get(id=game_id)
+                            obj.treasure = treasure
+                            obj = form.save()
+                        else:
+                            # error message not valid position
+                            location_error = "Sorry, you were wrong"
             except Treasure.DoesNotExist:
                 pass
     all_treasures_found = Player_Treasure_Found.objects.filter(game=gameObj, player=request.user)
