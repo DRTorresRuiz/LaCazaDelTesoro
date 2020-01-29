@@ -31,18 +31,29 @@
   
   <div style="vertical-align: top; width: 380px; margin: 10px; float:left;" class="border border-secondary rounded shadow p-3 bg-white">
     <h2><span style="font-weight: bold">Name of the Game:</span> {{ game.name }}</h2>
+    <a class="twitter-share-button"
+      {% if end_msg %}
+        href="https://twitter.com/intent/tweet?text=I%20have%20enjoyed%20playing%20the%20game%20{{ game.name }}%20in%20@CazaLa"
+      {% elif win_msg %}
+        href="https://twitter.com/intent/tweet?text=I%20win%20the%20game%20{{ game.name }}%20in%20@CazaLa"
+      {% else %}
+        href="https://twitter.com/intent/tweet?text=I%20have%20joined%20the%20game%20{{ game.name }}%20in%20@CazaLa"
+      {% endif %}
+      data-size="large">
+        Tweet
+    </a>
     {% if end_msg %}
       <div class="bs-example">
           <div class="alert alert-danger alert-dismissible fade show">
               <strong>Time!</strong> {{end_msg}}
-              <div><a href="/">Go to home</a></div>
+              <div><a href="/">Go to Home</a></div>
           </div>
       </div>
     {% elif win_msg %}
       <div class="bs-example">
           <div class="alert alert-success alert-dismissible fade show">
               <strong>Congratulations!</strong> {{win_msg}}
-              <div><a href="/">Go to home</a></div>
+              <div><a href="/">Go to Home</a></div>
           </div>
       </div>
     {% else %}

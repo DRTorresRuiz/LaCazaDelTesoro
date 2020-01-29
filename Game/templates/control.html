@@ -32,7 +32,16 @@
 
 <div style="vertical-align: top; width: 1000px;margin: 10px auto; overflow: hidden" class="border border-secondary rounded shadow p-3 bg-white">
   {% load widget_tweaks %}
-    <h2><span style="font-weight: bold;">Name of the Game:</span> {{game}}</h2>
+    <h2>
+      <span style="font-weight: bold;">Name of the Game:</span> 
+      {{game}}  
+      &nbsp;&nbsp;
+       <a class="twitter-share-button"
+    href="https://twitter.com/intent/tweet?text=I%20have%20created%20the%20game%20{{game}}%20in%20@CazaLa"
+      data-size="large">
+        Tweet
+      </a>
+    </h2>
     <h3>
         <span style="font-weight: bold;">Status: </span>
         {%if game.status == 2%}
