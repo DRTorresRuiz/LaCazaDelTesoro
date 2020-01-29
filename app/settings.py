@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'channels', #chat
     'chat', #chat
+    'storages'
 ]
 
 MIDDLEWARE = [ 
@@ -132,8 +133,20 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+AWS_ACCESS_KEY_ID = 'AKIAVOC3FBBUEIOYZDB3'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'pr-imagenes'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+AWS_LOCATION = 'media'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+
+DEFAULT_FILE_STORAGE = 'app.storage_backends.MediaStorage'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (

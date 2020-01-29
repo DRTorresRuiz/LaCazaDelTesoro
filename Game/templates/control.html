@@ -59,7 +59,7 @@
 
     {% for treasure_found in treasure_list %}
       <div class="card" style="width: 250px; min-height: 300px; margin: 20px;float: left;">
-          <img src="/media/{{ treasure_found.treasure_img }}" class="card-img-top">
+          <img src="{{ treasure_found.treasure_img.url }}" class="card-img-top">
           <div class="card-body">
             <h5 class="card-title">{{treasure_found.name}}</h5>
             <p class="card-text"><span style="font-weight: bold">Clue: </span>{{treasure_found.clue}}</p>
@@ -71,7 +71,7 @@
                   <li class="list-group-item">
                       {{found.player}}
                       <br>
-                      <img src="/media/{{ found.prove_img }}" width="50px" class="thumbnail"/>
+                      <img src="{{ found.prove_img.url }}" width="50px" class="thumbnail"/>
                   </li>
                 {% endfor %}
             </ul>

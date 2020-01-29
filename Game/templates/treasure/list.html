@@ -53,7 +53,7 @@
             </td>
             <td>
                 {% if treasure.treasure_img != '' %}
-                  <img src="/media/{{ treasure.treasure_img }}" width="50px" />
+                  <img src="{{ treasure.treasure_img.url }}" width="50px" />
                 {% endif %}
             </td>
         </tr>
