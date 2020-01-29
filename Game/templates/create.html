@@ -25,7 +25,7 @@
   </script>
   {% endblock %}
 
-  <table>
+  <table style="margin-bottom: 10px">
     <tr>
       <td style="width: 400px;" class="border border-secondary rounded shadow p-3 bg-white">
         {% load widget_tweaks %}
@@ -66,7 +66,7 @@
             {% endif %}
           </div>
           {% endfor %}
-          <button type="submit" class="save btn btn-success">Save</button>
+          <button type="submit" id="btn-save" class="save btn btn-success" disabled>Save</button>
           <a href="/" class="btn btn-secondary">Cancel</a>
         </form>
       </td>
@@ -77,6 +77,12 @@
       </td>
     </tr>
   </table>
+  
+  <a class="twitter-share-button"
+    href="https://twitter.com/intent/tweet?text=I%20have%20created%20a%20game%20in%20@CazaLa"
+    data-size="large">
+    Tweet
+  </a>
 
   <script>
     // This example adds a user-editable rectangle to the map.
@@ -121,6 +127,8 @@
     }
 
     function initMap() {
+      $('#id_north_east_bound_0').parent().hide()
+      $('#id_south_west_bound_0').parent().hide()
       map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 36.7090448, lng: -4.4791599 },
         zoom: 15,
@@ -130,6 +138,7 @@
       map.addListener('dblclick', function (e) {
         if (rectangle) { rectangle.setMap(null); }
         setRectangle(e.latLng.lat(), e.latLng.lng());
+        document.getElementById("btn-save").disabled = false;
       });
 
       // Define an info window on the map.

@@ -32,7 +32,16 @@
 
 <div style="vertical-align: top; width: 1000px;margin: 10px auto; overflow: hidden" class="border border-secondary rounded shadow p-3 bg-white">
   {% load widget_tweaks %}
-    <h2><span style="font-weight: bold;">Name of the Game:</span> {{game}}</h2>
+    <h2>
+      <span style="font-weight: bold;">Name of the Game:</span> 
+      {{game}}  
+      &nbsp;&nbsp;
+       <a class="twitter-share-button"
+    href="https://twitter.com/intent/tweet?text=I%20have%20created%20the%20game%20{{game}}%20in%20@CazaLa"
+      data-size="large">
+        Tweet
+      </a>
+    </h2>
     <h3>
         <span style="font-weight: bold;">Status: </span>
         {%if game.status == 2%}
@@ -50,7 +59,7 @@
 
     {% for treasure_found in treasure_list %}
       <div class="card" style="width: 250px; min-height: 300px; margin: 20px;float: left;">
-          <img src="/media/{{ treasure_found.treasure_img }}" class="card-img-top">
+          <img src="{{ treasure_found.treasure_img.url }}" class="card-img-top">
           <div class="card-body">
             <h5 class="card-title">{{treasure_found.name}}</h5>
             <p class="card-text"><span style="font-weight: bold">Clue: </span>{{treasure_found.clue}}</p>
@@ -62,7 +71,7 @@
                   <li class="list-group-item">
                       {{found.player}}
                       <br>
-                      <img src="/media/{{ found.prove_img }}" width="50px" class="thumbnail"/>
+                      <img src="{{ found.prove_img.url }}" width="50px" class="thumbnail"/>
                   </li>
                 {% endfor %}
             </ul>

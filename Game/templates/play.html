@@ -31,18 +31,29 @@
   
   <div style="vertical-align: top; width: 380px; margin: 10px; float:left;" class="border border-secondary rounded shadow p-3 bg-white">
     <h2><span style="font-weight: bold">Name of the Game:</span> {{ game.name }}</h2>
+    <a class="twitter-share-button"
+      {% if end_msg %}
+        href="https://twitter.com/intent/tweet?text=I%20have%20enjoyed%20playing%20the%20game%20{{ game.name }}%20in%20@CazaLa"
+      {% elif win_msg %}
+        href="https://twitter.com/intent/tweet?text=I%20win%20the%20game%20{{ game.name }}%20in%20@CazaLa"
+      {% else %}
+        href="https://twitter.com/intent/tweet?text=I%20have%20joined%20the%20game%20{{ game.name }}%20in%20@CazaLa"
+      {% endif %}
+      data-size="large">
+        Tweet
+    </a>
     {% if end_msg %}
       <div class="bs-example">
           <div class="alert alert-danger alert-dismissible fade show">
               <strong>Time!</strong> {{end_msg}}
-              <div><a href="/">Go to home</a></div>
+              <div><a href="/">Go to Home</a></div>
           </div>
       </div>
     {% elif win_msg %}
       <div class="bs-example">
           <div class="alert alert-success alert-dismissible fade show">
               <strong>Congratulations!</strong> {{win_msg}}
-              <div><a href="/">Go to home</a></div>
+              <div><a href="/">Go to Home</a></div>
           </div>
       </div>
     {% else %}
@@ -65,7 +76,7 @@
             <small><span style="font-weight: bold">Clue:</span> {{ treasure_available.clue }}</small>
               {% if treasure_available.treasure_img != '' %}
                 <br>
-                <img src="/media/{{ treasure_available.treasure_img }}" width="50px" class="thumbnail"/>
+                <img src="{{ treasure_available.treasure_img.url }}" width="50px" class="thumbnail"/>
               {% endif %}
           </a>
           {% endfor %}
@@ -128,7 +139,7 @@
     {% if all_treasures_found %}
       {% for treasure_found in all_treasures_found %}
         <div class="card" style="width: 280px; min-height: 300px; margin: 20px;float: left;">
-            <img src="/media/{{ treasure_found.prove_img }}" class="card-img-top">
+            <img src="{{ treasure_found.prove_img.url }}" class="card-img-top">
             <div class="card-body">
               <h5 class="card-title">{{treasure_found.treasure.name}}</h5>
               <p class="card-text"><span style="font-weight: bold">Clue: </span>{{ treasure_found.treasure.clue }}</p>

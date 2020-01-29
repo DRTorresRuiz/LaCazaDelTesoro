@@ -18,23 +18,25 @@ from django.urls import path, include
 
 # mysite/urls.py
 from django.conf.urls import include
-from django.conf.urls.static import static
-from django.conf import settings
+
+# from django.conf.urls.static import static
+# from django.conf import settings
 
 admin.autodiscover()
 
 # Add patterns to access to your views
 urlpatterns = [
-    #path('game/', include('Game.urls', namespace="game"), name="game"),
-    #path('Game/', include('Game.urls', namespace="Game"), name="Game"),
-	path('', include('homepage.urls')),
+    # path('game/', include('Game.urls', namespace="game"), name="game"),
+    # path('Game/', include('Game.urls', namespace="Game"), name="Game"),
+    path('', include('homepage.urls')),
     path('admin/', admin.site.urls),
     path('registration/', include('registration.urls')),
-    #path('game/', include('game.urls')),
+    # path('game/', include('game.urls')),
     path('Game/', include('Game.urls')),
     # for chat
     path('chat/', include('chat.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+# + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 '''
 #Add URL maps to redirect the base URL to our application
@@ -45,8 +47,8 @@ urlpatterns += [
 '''
 
 # Use static() to add url mapping to serve static files during development (only)
-from django.conf import settings
-from django.conf.urls.static import static
+# from django.conf import settings
+# from django.conf.urls.static import static
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
