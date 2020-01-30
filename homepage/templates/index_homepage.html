@@ -116,9 +116,10 @@
                   <table id="dtJoinedGames" class="table" cellspacing="0" width="708">
                     <thead>
                       <tr>
+                          <th></th>
                           <th class="th-sm">Game</th>
                           <th class="th-sm">Status</th>
-                          <th class="th-sm">Winner</th>
+                          <th class="th-sm">Number of Treasures</th>
                           <th class="th-sm">Leave</th>
                           <th class="th-sm">Play</th>
                     </tr>
@@ -126,17 +127,20 @@
                     <tbody>
                       {% for game in games_joined  %}
                       <tr>
+                          <td valign="center"
+                          {% if game.status == 2 %}
+                            winner="There is no winner yet."
+                          {% else %}
+                            winner="{{ game.winner }}"
+                          {% endif %}
+                        ></td>
                       <td>{{ game.name }}</td>
                       {% if game.status == 2 %}
                       <td> <span class="badge badge-success">Active</span></td>
                       {% else %}
                       <td> <span class="badge badge-secondary">Finished</span></td>
                       {% endif %}
-                      {% if game.winner is None %}
-                      <td>No winner yet.</td>
-                      {% else %}
-                      <td>{{game.winner}}</td>
-                      {% endif %}
+                      <td style="text-align: center;" valign="center">{{ game.count_treasures }}</td>
                       {% if user in game.player.all and game.status == 2 %}
                       <td><a href="{{ game.get_leave_url }}" class="btn btn-danger">Leave</a></td>
                       {% else %}
@@ -236,10 +240,39 @@
         }
     } );
 
-    $('#dtJoinedGames').DataTable({
-      "order": [[ 4, "desc" ]],
+    var table2 =$('#dtJoinedGames').DataTable({
+      "columns": [
+        { "className":      'details-control',
+          "orderable":      false,
+          "data":           null,
+          "defaultContent": ''
+        },
+        { "data": "Game" },
+        { "data": "Status" },
+        { "data": "Number of Treasures" },
+        { "data": "Leave" },
+        { "data": "Play" }
+      ],
+      "order": [[ 5, "desc" ]],
       "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
     });
+
+    $('#dtJoinedGames tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table2.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( "<span style='font-weight: bold'> Winner: </span>" + $(this).attr("winner") ).show();
+            tr.addClass('shown');
+        }
+    } );
+
     $('#dtCreatedGames').DataTable({
       "order": [[ 1, "asc" ]],
       "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
