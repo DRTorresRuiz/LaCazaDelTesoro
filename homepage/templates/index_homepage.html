@@ -67,34 +67,34 @@
                       <tbody>
                         {% for game in games  %}
                         <tr>
-                          <td 
+                          <td valign="center"
                             {% if game.status == 2 %}
                               winner="There is no winner yet."
                             {% else %}
                               winner="{{ game.winner }}"
                             {% endif %}
                           ></td>
-                          <td>{{ game.name }}</td>
+                          <td valign="center">{{ game.name }}</td>
                           {% if game.status == 2 %}
-                          <td> <span class="badge badge-success">Active</span></td>
+                            <td valign="center"> <span class="badge badge-success">Active</span></td>
                           {% else %}
-                          <td> <span class="badge badge-secondary">Finished</span></td>
+                            <td valign="center"> <span class="badge badge-secondary">Finished</span></td>
                           {% endif %}
-                          <td style="text-align: center">{{ game.count_treasures }}</td>
+                            <td style="text-align: center;" valign="center">{{ game.count_treasures }}</td>
                           {% if user in game.player.all and game.status == 2 %}
-                          <td><a href="{{ game.get_leave_url }}" class="btn btn-danger">Leave</a></td>
+                            <td valign="center"><a href="{{ game.get_leave_url }}" class="btn btn-danger btn-sm">Leave</a></td>
                           {% elif game.status == 2 %}
-                          <td><a href="{{ game.get_join_url }}" class="btn btn-success">Join</a></td>
+                            <td valign="center"><a href="{{ game.get_join_url }}" class="btn btn-success btn-sm">Join</a></td>
                           {% else %}
-                          <td></td>
+                            <td></td>
                           {% endif %}
                           {% if user in game.player.all and game.status == 2 %}
-                          <td><a href="/Game/play/{{ game.id }}/" class="btn btn-success">Enter</a></td>
+                            <td valign="center"><a href="/Game/play/{{ game.id }}/" class="btn btn-success btn-sm">Enter</a></td>
                           {% else %}
-                          <td></td>
+                            <td></td>
                           {% endif %}
                           {% if user.is_superuser %}
-                              <td><a href="/Game/control/{{ game.id }}/" class="btn btn-info">View</a></td>
+                            <td valign="center"><a href="/Game/control/{{ game.id }}/" class="btn btn-info btn-sm">View</a></td>
                           {% endif %}
                         </tr>
                     {% endfor %}
