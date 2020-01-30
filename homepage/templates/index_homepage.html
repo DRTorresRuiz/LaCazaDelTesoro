@@ -53,6 +53,7 @@
                     <table id="dtAllGames" class="table" cellspacing="0" style="width: 708px">
                       <thead>
                         <tr>
+                            <th></th>
                             <th class="th-sm">Game</th>
                             <th class="th-sm">Status</th>
                             <th class="th-sm">Number of Treasures</th>
@@ -66,28 +67,35 @@
                       <tbody>
                         {% for game in games  %}
                         <tr>
-                        <td>{{ game.name }}</td>
-                        {% if game.status == 2 %}
-                        <td> <span class="badge badge-success">Active</span></td>
-                        {% else %}
-                        <td> <span class="badge badge-secondary">Finished</span></td>
-                        {% endif %}
-                        <td style="text-align: center">{{ game.count_treasures }}</td>
-                        {% if user in game.player.all and game.status == 2 %}
-                        <td><a href="{{ game.get_leave_url }}" class="btn btn-danger">Leave</a></td>
-                        {% elif game.status == 2 %}
-                        <td><a href="{{ game.get_join_url }}" class="btn btn-success">Join</a></td>
-                        {% else %}
-                        <td></td>
-                        {% endif %}
-                        {% if user in game.player.all and game.status == 2 %}
-                        <td><a href="/Game/play/{{ game.id }}/" class="btn btn-success">Enter</a></td>
-                        {% else %}
-                        <td></td>
-                        {% endif %}
-                        {% if user.is_superuser %}
-                            <td><a href="/Game/control/{{ game.id }}/" class="btn btn-info">View</a></td>
-                        {% endif %}
+                          <td valign="center"
+                            {% if game.status == 2 %}
+                              winner="There is no winner yet."
+                            {% else %}
+                              winner="{{ game.winner }}"
+                            {% endif %}
+                          ></td>
+                          <td valign="center">{{ game.name }}</td>
+                          {% if game.status == 2 %}
+                            <td valign="center"> <span class="badge badge-success">Active</span></td>
+                          {% else %}
+                            <td valign="center"> <span class="badge badge-secondary">Finished</span></td>
+                          {% endif %}
+                            <td style="text-align: center;" valign="center">{{ game.count_treasures }}</td>
+                          {% if user in game.player.all and game.status == 2 %}
+                            <td valign="center"><a href="{{ game.get_leave_url }}" class="btn btn-danger btn-sm">Leave</a></td>
+                          {% elif game.status == 2 %}
+                            <td valign="center"><a href="{{ game.get_join_url }}" class="btn btn-success btn-sm">Join</a></td>
+                          {% else %}
+                            <td></td>
+                          {% endif %}
+                          {% if user in game.player.all and game.status == 2 %}
+                            <td valign="center"><a href="/Game/play/{{ game.id }}/" class="btn btn-success btn-sm">Enter</a></td>
+                          {% else %}
+                            <td></td>
+                          {% endif %}
+                          {% if user.is_superuser %}
+                            <td valign="center"><a href="/Game/control/{{ game.id }}/" class="btn btn-info btn-sm">View</a></td>
+                          {% endif %}
                         </tr>
                     {% endfor %}
                       </tbody>
@@ -108,9 +116,10 @@
                   <table id="dtJoinedGames" class="table" cellspacing="0" width="708">
                     <thead>
                       <tr>
+                          <th></th>
                           <th class="th-sm">Game</th>
                           <th class="th-sm">Status</th>
-                          <th class="th-sm">Winner</th>
+                          <th class="th-sm">Number of Treasures</th>
                           <th class="th-sm">Leave</th>
                           <th class="th-sm">Play</th>
                     </tr>
@@ -118,17 +127,20 @@
                     <tbody>
                       {% for game in games_joined  %}
                       <tr>
+                          <td valign="center"
+                          {% if game.status == 2 %}
+                            winner="There is no winner yet."
+                          {% else %}
+                            winner="{{ game.winner }}"
+                          {% endif %}
+                        ></td>
                       <td>{{ game.name }}</td>
                       {% if game.status == 2 %}
                       <td> <span class="badge badge-success">Active</span></td>
                       {% else %}
                       <td> <span class="badge badge-secondary">Finished</span></td>
                       {% endif %}
-                      {% if game.winner is None %}
-                      <td>No winner yet.</td>
-                      {% else %}
-                      <td>{{game.winner}}</td>
-                      {% endif %}
+                      <td style="text-align: center;" valign="center">{{ game.count_treasures }}</td>
                       {% if user in game.player.all and game.status == 2 %}
                       <td><a href="{{ game.get_leave_url }}" class="btn btn-danger">Leave</a></td>
                       {% else %}
@@ -194,14 +206,73 @@
 
   <script>
   $(document).ready(function () {
-    $('#dtAllGames').DataTable({
-      "order": [[ 4, "desc" ]],
+    var table = $('#dtAllGames').DataTable({
+      "columns": [
+        { "className":      'details-control',
+          "orderable":      false,
+          "data":           null,
+          "defaultContent": ''
+        },
+        { "data": "Game" },
+        { "data": "Status" },
+        { "data": "Number of Treasures" },
+        { "data": "Join" },
+        { "data": "Play" }
+      ],
+      "order": [[ 5, "desc" ]],
       "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
     });
-    $('#dtJoinedGames').DataTable({
-      "order": [[ 4, "desc" ]],
+
+    // Add event listener for opening and closing details
+    $('#dtAllGames tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( "<span style='font-weight: bold'> Winner: </span>" + $(this).attr("winner") ).show();
+            tr.addClass('shown');
+        }
+    } );
+
+    var table2 =$('#dtJoinedGames').DataTable({
+      "columns": [
+        { "className":      'details-control',
+          "orderable":      false,
+          "data":           null,
+          "defaultContent": ''
+        },
+        { "data": "Game" },
+        { "data": "Status" },
+        { "data": "Number of Treasures" },
+        { "data": "Leave" },
+        { "data": "Play" }
+      ],
+      "order": [[ 5, "desc" ]],
       "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
     });
+
+    $('#dtJoinedGames tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr');
+        var row = table2.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( "<span style='font-weight: bold'> Winner: </span>" + $(this).attr("winner") ).show();
+            tr.addClass('shown');
+        }
+    } );
+
     $('#dtCreatedGames').DataTable({
       "order": [[ 1, "asc" ]],
       "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
