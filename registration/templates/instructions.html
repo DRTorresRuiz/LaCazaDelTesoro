@@ -3,56 +3,35 @@
 </h3>
 <br>
 <p>
-    This game has been during through the project of ... It is highly recommended to read the instructions to understand the game fully and use the full functionalities of the game.
+    This is a treasure hunt game throughout the world. 
+    Any player is able to start a game or join a game. 
+    Object of the game is to be the first to find all the treasures and declare yourself as the winner of the game.
+    To do so, you try to find all the treasures. It is important that you check different places and be fast. Only then can you outpace the others!  
 </p>
+<div style="text-align: right">
+    <a class="btn btn-primary text-white btn-sm" onclick="showInstructions();"> See Game Instructions </a>
+</div>
 
-<p>
-    This is a treasure hunt game throughout the world. Any player is able to start a game or join a game. Object of the game is to be the first to find all the treasures and declare yourself as the winner of the game. To do so, you try to find all the treasures. Each time when you find a treasure you must ...
-    It is important that you check different places and be fast. Only then can you outpace the others!  
-</p>
 
-<br>
+<script>
+    function showInstructions() {
+        var instructions = '<br><p>1. <span style="font-weight: bold">Log in.</span> To play the game, first login with your Google Account. Through this your  name, email address, language preference, and profile picture will be extracted, which makes it easier to identify you.</p>' +
+                '<p>2. <span style="font-weight: bold">Create or Join a Game</span> After logging in you have the two main options:' +
+                '<ol><ol type="A"><li> <span style="font-weight: bold">Join a game:</span> <br> After the creator of a game has created a game and select the locations of the treasures, the players can join the game by choosing one under "All Games" window. If you wish to find a certain game, feel free to search by the name of the game. After selecting the game, you can click in the Join column on the Join Button. After this you can start playing by pressing on the Play button.<br><br></li>' +
+                '<li> <span style="font-weight: bold">Create a game:</span><br>On the homepage you can press the "Create a Game" to start creating a game. Now you can name this game and give the north east and south west bounds of the region to play in. This can be easily done by left-clicking on a region of the map twice. When the black overlay appears you can expand the box to set the region.When you click on "Save", you can now add treasures. Each treasure requires also a name, clue and solution. When you set it\'s postion you can only choose inside the black overlay box. Then you will add the image of the treasure, to which the players can check compare to. After clicking on save the treasure will be added to "All treasures" and you can add further treasures. When you are done click on "Save" to start the game and then you can "Go Home".After this your game will appear under the column of "My Games Created". Here you have administrator abilities such as to Reset the Game and to look at the list of players. Also here you can approve the winner of the game and also also to finish the game. If wished you can also reset the complete game and eliminate all the recorded data of the found treasures.<br><br></li>' +
+                '</ol></ol></p>' +
+                '<p>3. <span style="font-weight: bold">Play.</span> After joining a game you will be directed to the room full of treasures. On the left side you will see the map where the treasures are hidden. The red overlay marks the field of the region. On the top right side you will see the available treasures. Each treasure has a clue to its position and a solution. When you have found a treasure you can check it by taking a screenshot of the treasure and uploading it to the game by "Prove Img" and pressing on the "Treasure Found!" button. Now if you were right, the new added treasure will appear under the "Treasures found". Interact with the other players in the game by chatting in the chat room. Also tweet us at our social media account on Twitter @CazaLa and #gamename to update us on your progress. We are looking forward to hear from you! The game ends when a player has found all the treasures. After this the game will be closed and now you can join another game or also it could be your turn to create a game.</p>' +
+                '<p>4. <span style="font-weight: bold">Have FUN!</span><br>F is for friends who do stuff together.<br>U is for you and me.<br>N is for anywhere and anytime at all.</p>';
 
-<h4>Game Instructions.</h4>
-
-<ol>
-    <li> 
-        <span style="font-weight: bold">Log in.</span> To play the game, first login with your Google Account. Through this your  name, email address, language preference, and profile picture will be extracted, which makes it easier to identify you.
-        <br><br>
-    </li>
-    <li> 
-        <span style="font-weight: bold">Create or Join a Game</span> After logging in you have the two main options: 
-        <ol type="A">
-            <li> 
-                <span style="font-weight: bold">Join a game:</span>
-                <br>
-                After the creator of a game has created a game and select the locations of the treasures, the players can join the game by choosing one under "All Games" window. If you wish to find a certain game, feel free to search by the name of the game.
-
-                After selecting the game, you can click in the Join column on the Join Button. After this you can start playing by pressing on the Play button.
-                <br><br>
-            </li>
-            <li> 
-                <span style="font-weight: bold">Create a game:</span>
-                <br>
-                On the homepage you can press the "Create a Game" to start creating a game. Now you can name this game and give the north east and south west bounds of the region to play in. This can be easily done by left-clicking on a region of the map twice. When the black overlay appears you can expand the box to set the region.
-
-                When you click on "Save", you can now add treasures. Each treasure requires also a name, clue and solution. When you set it's postion you can only choose inside the black overlay box. Then you will add the image of the treasure, to which the players can check compare to. After clicking on save the treasure will be added to "All treasures" and you can add further treasures. When you are done click on "Save" to start the game and then you can "Go Home".
-
-                After this your game will appear under the column of "My Games Created". Here you have administrator abilities such as to Reset the Game and to look at the list of players. Also here you can approve the winner of the game and also also to finish the game. If wished you can also reset the complete game and eliminate all the recorded data of the found treasures.
-                <br><br>
-            </li>
-        </ol>
-        <li> 
-            <span style="font-weight: bold">Play.</span> After joining a game you will be directed to the room full of treasures. On the left side you will see the map where the treasures are hidden. The red overlay marks the field of the region. On the top right side you will see the available treasures. Each treasure has a clue to its position and a solution. When you have found a treasure you can check it by taking a screenshot of the treasure and uploading it to the game by "Prove Img" and pressing on the "Treasure Found!" button. Now if you were right, the new added treasure will appear under the "Treasures found". Interact with the other players in the game by chatting in the chat room. Also tweet us at our social media account on Twitter @CazaLa and #gamename to update us on your progress. We are looking forward to hear from you! 
-
-            The game ends when a player has found all the treasures. After this the game will be closed and now you can join another game or also it could be your turn to create a game.            
-            <br><br>
-        </li>
-        <li> 
-            <span style="font-weight: bold">Have FUN!</span><br>
-            F is for friends who do stuff together.<br>
-            U is for you and me.<br>
-            N is for anywhere and anytime at all.
-        </li>
-    </li>
-</ol>
+        Swal.fire({
+            title: '<strong>Game Instructions</strong>',
+            html: '<instructions>' + instructions + '</instructions>',
+            showCloseButton: true,
+            width: 800,
+            padding: '3em',
+            focusConfirm: true,
+            confirmButtonText:
+                '<i class="fa fa-thumbs-up"></i> Great!',
+        });
+    }
+</script>
