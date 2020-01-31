@@ -31,6 +31,7 @@ urlpatterns = [
     # path('Game/', include('Game.urls', namespace="Game"), name="Game"),
     path('', include('homepage.urls')),
     url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
+     url(r'^jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),  # Django JET dashboard URLS
     path('admin/', admin.site.urls),
     path('registration/', include('registration.urls')),
     # path('game/', include('game.urls')),

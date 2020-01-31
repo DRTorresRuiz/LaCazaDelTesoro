@@ -21,7 +21,6 @@ django-enum-choices==2.1.1
 django-geojson==2.12.0
 django-geoposition==0.3.0
 django-google-maps==0.11.0
-django-grappelli==2.13.3
 django-jet==1.0.8
 django-leaflet==0.26.0
 django-redis-cache==2.1.0
@@ -31,6 +30,7 @@ djongo==1.2.36
 dnspython==1.16.0
 docutils==0.15.2
 gunicorn==20.0.2
+google-api-python-client==1.4.1
 hiredis==1.0.1
 hyperlink==19.0.0
 idna==2.8
