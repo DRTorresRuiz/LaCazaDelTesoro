@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
 
 # mysite/urls.py
 from django.conf.urls import include
@@ -29,6 +30,7 @@ urlpatterns = [
     # path('game/', include('Game.urls', namespace="game"), name="game"),
     # path('Game/', include('Game.urls', namespace="Game"), name="Game"),
     path('', include('homepage.urls')),
+    url(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('admin/', admin.site.urls),
     path('registration/', include('registration.urls')),
     # path('game/', include('game.urls')),
