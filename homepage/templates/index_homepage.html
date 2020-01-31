@@ -215,7 +215,10 @@
         { "data": "Status" },
         { "data": "Number of Treasures" },
         { "data": "Join" },
-        { "data": "Play" }
+        { "data": "Play" },
+        {% if user.is_superuser %}
+        { "data": "View" },
+        {% endif %}
       ],
       "order": [[ 5, "desc" ]],
       "lengthMenu": [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]]
